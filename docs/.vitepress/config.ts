@@ -74,7 +74,7 @@ export default defineConfig({
     darkModeSwitchLabel: '主题',
     lightModeSwitchTitle: '切换到浅色模式',
     darkModeSwitchTitle: '切换到深色模式',
-    socialLinks: [{ icon: 'github', link: 'https://github.com/lhgb/lh-ui' }],
+    socialLinks: [{ icon: 'github', link: 'https://github.com/lhgb-top/lh-ui-uniapp' }],
   },
   vite: {
     resolve: {
