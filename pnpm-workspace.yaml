@@ -1,0 +1,8 @@
+allowBuilds:
+  '@parcel/watcher': set this to true or false
+  core-js: set this to true or false
+  core-js-pure: set this to true or false
+  esbuild: set this to true or false
+  ttf2woff2: set this to true or false
+minimumReleaseAgeExclude:
+  - '@lh-ui/share@0.3.0 || 0.4.0'

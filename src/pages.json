@@ -1,0 +1,142 @@
+{
+  "easycom": {
+    "autoscan": false,
+    "custom": {
+      "^lh-(.*)": "@/components/lh-$1/lh-$1.vue"
+    }
+  },
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "lh-ui uniapp"
+      }
+    },
+    {
+      "path": "pages/button/button",
+      "style": {
+        "navigationBarTitleText": "Button 按钮"
+      }
+    },
+    {
+      "path": "pages/icon/icon",
+      "style": {
+        "navigationBarTitleText": "Icon 图标"
+      }
+    },
+    {
+      "path": "pages/tag/tag",
+      "style": {
+        "navigationBarTitleText": "Tag 标签"
+      }
+    },
+    {
+      "path": "pages/input/input",
+      "style": {
+        "navigationBarTitleText": "Input 输入框"
+      }
+    },
+    {
+      "path": "pages/switch/switch",
+      "style": {
+        "navigationBarTitleText": "Switch 开关"
+      }
+    },
+    {
+      "path": "pages/checkbox/checkbox",
+      "style": {
+        "navigationBarTitleText": "Checkbox 多选"
+      }
+    },
+    {
+      "path": "pages/radio/radio",
+      "style": {
+        "navigationBarTitleText": "Radio 单选"
+      }
+    },
+    {
+      "path": "pages/form/form",
+      "style": {
+        "navigationBarTitleText": "Form 表单"
+      }
+    },
+    {
+      "path": "pages/select/select",
+      "style": {
+        "navigationBarTitleText": "Select 选择器"
+      }
+    },
+    {
+      "path": "pages/tooltip/tooltip",
+      "style": {
+        "navigationBarTitleText": "Tooltip 提示"
+      }
+    },
+    {
+      "path": "pages/dialog/dialog",
+      "style": {
+        "navigationBarTitleText": "Dialog 对话框"
+      }
+    },
+    {
+      "path": "pages/services/services",
+      "style": {
+        "navigationBarTitleText": "Message / Loading 服务"
+      }
+    },
+    {
+      "path": "pages/space/space",
+      "style": {
+        "navigationBarTitleText": "Space 间距"
+      }
+    },
+    {
+      "path": "pages/divider/divider",
+      "style": {
+        "navigationBarTitleText": "Divider 分割线"
+      }
+    },
+    {
+      "path": "pages/badge/badge",
+      "style": {
+        "navigationBarTitleText": "Badge 徽标"
+      }
+    },
+    {
+      "path": "pages/skeleton/skeleton",
+      "style": {
+        "navigationBarTitleText": "Skeleton 骨架屏"
+      }
+    },
+    {
+      "path": "pages/avatar/avatar",
+      "style": {
+        "navigationBarTitleText": "Avatar 头像"
+      }
+    },
+    {
+      "path": "pages/empty/empty",
+      "style": {
+        "navigationBarTitleText": "Empty 空状态"
+      }
+    },
+    {
+      "path": "pages/card/card",
+      "style": {
+        "navigationBarTitleText": "Card 卡片"
+      }
+    },
+    {
+      "path": "pages/progress/progress",
+      "style": {
+        "navigationBarTitleText": "Progress 进度条"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "lh-ui uniapp",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "backgroundColor": "#F5F3EE"
+  }
+}

@@ -1,0 +1,13 @@
+node_modules
+dist
+unpackage
+coverage
+.dev-dist
+tsconfig.dev.json
+docs/.vitepress/cache
+docs/.vitepress/dist
+*.log
+.DS_Store
+
+# ZCode 工具目录（plan 文件等，非仓库内容）
+.zcode/

@@ -1,0 +1,10 @@
+node_modules
+dist
+unpackage
+coverage
+docs
+dev
+tests
+.github
+.zcode
+*.log

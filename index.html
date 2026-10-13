@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"
+    />
+    <title>lh-ui uniapp</title>
+    <script>
+      // uni-app H5 端 rem 适配基准（750 设计稿，1rem = 视口宽 / 20）
+      document.addEventListener('DOMContentLoaded', function () {
+        document.documentElement.style.fontSize = document.documentElement.clientWidth / 20 + 'px'
+      })
+    </script>
+    <!--head-meta-->
+    <!--preload-links-->
+  </head>
+  <body>
+    <div id="app"><!--app-html--></div>
+    <!--app-context-->
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

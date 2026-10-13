@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "lib": ["esnext", "dom", "dom.iterable"],
+    "moduleResolution": "bundler",
+    "strict": true,
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "declaration": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "types": [
+      "vite/client",
+      "@dcloudio/types",
+      "@lh-ui/share/types",
+      "vitest/globals",
+      "node"
+    ],
+    "outDir": "dist/types"
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.vue",
+    "components/**/*.ts",
+    "components/**/*.vue",
+    "tests/**/*.ts",
+    "env.d.ts"
+  ],
+  "exclude": ["node_modules", "dist", "dev", "docs"]
+}

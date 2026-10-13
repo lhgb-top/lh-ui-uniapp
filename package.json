@@ -1,0 +1,115 @@
+{
+  "name": "@lh-ui/uniapp",
+  "type": "module",
+  "version": "0.0.0",
+  "description": "lh-ui 家族 uni-app UI 层（Vue3 版，H5 + 微信小程序优先）",
+  "license": "Apache-2.0",
+  "author": "lhgb <i@lhgb.top>",
+  "homepage": "https://www.lhgb.top/lhui/uniapp/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lhgb-top/lh-ui-uniapp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lhgb-top/lh-ui-uniapp/issues"
+  },
+  "keywords": [
+    "uni-app",
+    "uniapp",
+    "vue3",
+    "ui",
+    "component-library",
+    "typescript",
+    "chinese-style",
+    "ink-wash",
+    "lh-ui"
+  ],
+  "sideEffects": [
+    "**/*.css",
+    "**/*.scss"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "@lh-ui/share": "^0.4.0"
+  },
+  "peerDependencies": {
+    "vue": "^3.3.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "src",
+    "!src/App.vue",
+    "!src/main.ts",
+    "!src/manifest.json",
+    "!src/pages.json",
+    "!src/pages",
+    "!src/env.d.ts",
+    "!src/shared",
+    "README.md"
+  ],
+  "scripts": {
+    "dev:h5": "uni",
+    "dev:mp-weixin": "uni -p mp-weixin",
+    "dev:app": "uni -p app",
+    "build:h5": "uni build",
+    "build:mp-weixin": "uni build -p mp-weixin",
+    "build:styles": "node scripts/build-styles.mjs",
+    "build:iconfont": "node scripts/build-iconfont.mjs",
+    "build:assets": "pnpm build:iconfont && pnpm build:styles",
+    "verify:wxss": "node scripts/verify-wxss.mjs",
+    "lint": "eslint src tests scripts vite.config.ts vitest.config.ts",
+    "lint:fix": "eslint src tests scripts vite.config.ts vitest.config.ts --fix",
+    "typecheck": "node scripts/gen-dev-tsconfig.mjs && vue-tsc -p tsconfig.dev.json --noEmit",
+    "typecheck:npm": "vue-tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "changeset": "changeset",
+    "changeset:status": "changeset status",
+    "changeset:version": "changeset version",
+    "changeset:publish": "changeset publish",
+    "release": "changeset publish",
+    "release:push": "node scripts/push-release.mjs",
+    "prepublishOnly": "pnpm build:assets && pnpm verify:wxss",
+    "docs:dev": "vitepress dev docs --port 5179",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^3.0.3",
+    "@dcloudio/types": "^3.4.15",
+    "@dcloudio/uni-app": "3.0.0-alpha-5030120260930001",
+    "@dcloudio/uni-app-harmony": "3.0.0-alpha-5030120260930001",
+    "@dcloudio/uni-components": "3.0.0-alpha-5030120260930001",
+    "@dcloudio/uni-h5": "3.0.0-alpha-5030120260930001",
+    "@dcloudio/uni-mp-weixin": "3.0.0-alpha-5030120260930001",
+    "@dcloudio/uni-stat": "3.0.0-alpha-5030120260930001",
+    "@dcloudio/vite-plugin-uni": "3.0.0-alpha-5030120260930001",
+    "@eslint/js": "^10.0.1",
+    "@lh-ui/share": "^0.4.0",
+    "@types/node": "^26.6.4",
+    "@vitejs/plugin-vue": "^6.0.9",
+    "@vue/compiler-sfc": "^3.5.43",
+    "@vue/test-utils": "^2.5.1",
+    "eslint": "^10.12.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-vue": "^10.11.1",
+    "globals": "^17.13.0",
+    "jsdom": "^30.1.2",
+    "postcss": "^8.5.6",
+    "prettier": "^3.9.9",
+    "sass": "^1.105.1",
+    "svgtofont": "^4.0.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.71.1",
+    "vite": "^7.3.7",
+    "vitepress": "^1.6.4",
+    "vitest": "^5.0.3",
+    "vue": "^3.5.43",
+    "vue-tsc": "^2.2.0"
+  }
+}
