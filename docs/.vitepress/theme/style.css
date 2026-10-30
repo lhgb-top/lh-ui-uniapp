@@ -1,0 +1,35 @@
+.vp-doc {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.vp-doc table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.vp-doc pre,
+.vp-doc div[class*='language-'] {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.vp-doc img,
+.vp-doc video,
+.vp-doc iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 768px) {
+  .vp-doc h1 {
+    font-size: clamp(1.75rem, 7vw, 2.25rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .vp-doc h2 {
+    font-size: 1.35rem;
+  }
+}
