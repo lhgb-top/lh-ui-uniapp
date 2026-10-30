@@ -14,6 +14,11 @@
  *      - 仅 H5 的规则用 uni 条件编译注释包裹（#ifdef H5 / #endif）：
  *        :hover / :focus / :focus-visible / ::placeholder / @media (prefers-*)
  *        （prefers-* 块内的规则整体跳过净化：MP 端随条件编译整块剔除）
+ *        [dir='rtl'] 方向覆盖块与仅其引用的 `*-rtl` keyframes 同样只进 H5
+ *        （WXSS 无属性选择器，MP 端亦无 dir 语义）
+ *      - 逻辑属性双发：WXSS 不识别 margin/padding/border/inset 的 inline/start/end
+ *        系列与 text-align: start|end。物理兜底声明插在逻辑声明之前（MP/H5 均可见），
+ *        原逻辑声明用 #ifdef H5 夹住（H5 下覆盖兜底，RTL 自动镜像；MP 固定 LTR）
  *      - `svg {}` 后代选择器 → `.lh-iconfont`（iconfont 方案，§五）
  *      - `img {}` 后代选择器 → `.lh-img`（uni 端走 `<image>`，SFC 需写 class="lh-img"）
  *      - 通配符：`PREFIX > * + *` → 父规则 flex + gap；`PREFIX > *` → 丢弃并告警
@@ -76,10 +81,11 @@ function wrapH5ConditionalNode(node) {
 /**
  * 判断该规则是否只服务于 H5（小程序无鼠标焦点 / 无 prefers 媒体查询 / 无 placeholder 伪元素）
  * - 选择器含 :hover / :focus / :focus-visible / ::placeholder
+ * - 选择器含 [dir='rtl']：方向覆盖块，WXSS 无属性选择器且 MP 无 dir 语义
  * - @media (prefers-*) 查询
  */
 function isH5Only(selector) {
-  return /:(?:hover|focus|focus-visible)|::placeholder/.test(selector)
+  return /:(?:hover|focus|focus-visible)|::placeholder|\[dir=/.test(selector)
 }
 
 /**
@@ -91,6 +97,118 @@ function isH5Only(selector) {
  */
 function isPrefersMedia(params) {
   return /\(\s*prefers-/.test(params)
+}
+
+// ============================== 逻辑属性降级（RTL 支持） ==============================
+
+/**
+ * share 样式源为支持 RTL（阿拉伯语）已全面改用逻辑属性；WXSS 不识别这些属性，
+ * 原样进 MP 产物等同于布局丢失。这里做**双发**而非二选一：
+ *
+ *   margin-left: 4px;          ← 物理兜底，MP / H5 均可见
+ *   /* #ifdef H5 *\/
+ *   margin-inline-start: 4px;  ← 逻辑覆盖，仅 H5
+ *   /* #endif *\/
+ *
+ * 物理兜底在前、逻辑覆盖在后：H5 端同优先级后者胜出，LTR 下两者同值、
+ * RTL 下逻辑属性自动镜像；MP 端条件编译段被 uni 编译链剔除，只剩物理兜底
+ * （MP 无 dir 文档方向，固定按 LTR 渲染）。
+ *
+ * 未登记映射的逻辑属性（block 轴等）直接抛错，强制新增组件时显式决定降级方式，
+ * 沿用本管线「未覆盖形态抛错、不被静默吞掉」的设计。
+ */
+
+/** 1:1 映射的逻辑属性（inline 轴起止边） */
+const INLINE_LOGICAL_PROPS = {
+  'margin-inline-start': 'margin-left',
+  'margin-inline-end': 'margin-right',
+  'padding-inline-start': 'padding-left',
+  'padding-inline-end': 'padding-right',
+  'border-inline-start': 'border-left',
+  'border-inline-end': 'border-right',
+  'border-inline-start-width': 'border-left-width',
+  'border-inline-start-style': 'border-left-style',
+  'border-inline-start-color': 'border-left-color',
+  'border-inline-end-width': 'border-right-width',
+  'border-inline-end-style': 'border-right-style',
+  'border-inline-end-color': 'border-right-color',
+  'inset-inline-start': 'left',
+  'inset-inline-end': 'right',
+}
+
+/** 轴简写：一份值拆成起止两条物理声明 */
+const INLINE_SHORTHANDS = {
+  'margin-inline': ['margin-left', 'margin-right'],
+  'padding-inline': ['padding-left', 'padding-right'],
+  'inset-inline': ['left', 'right'],
+}
+
+/** 角圆角逻辑属性（block 轴 + inline 轴组合），LTR 下映射到固定物理角 */
+const LOGICAL_RADII = {
+  'border-start-start-radius': 'border-top-left-radius',
+  'border-start-end-radius': 'border-top-right-radius',
+  'border-end-start-radius': 'border-bottom-left-radius',
+  'border-end-end-radius': 'border-bottom-right-radius',
+}
+
+/** text-align 的逻辑值（值级降级，prop 本身 WXSS 支持） */
+const LOGICAL_TEXT_ALIGN = { start: 'left', end: 'right' }
+
+/** 命中即视为需要降级处理的逻辑属性名（含未登记者，用于抛错） */
+const LOGICAL_PROP_RE =
+  /^(?:margin|padding|inset)-(?:inline|block|inline-start|inline-end|block-start|block-end)$|^(?:margin|padding|border|inset)-(?:inline|block)-(?:start|end)(?:-(?:width|style|color))?$|^border-(?:start|end)-(?:start|end)-radius$/
+
+function physicalDecl(prop, value, important) {
+  return postcss.decl({ prop, value, important })
+}
+
+/**
+ * 双发插入：物理兜底声明插到逻辑声明之前，逻辑声明用 #ifdef H5 / #endif 夹住。
+ * 顺序很关键——物理在前、逻辑在后，H5 端逻辑属性才能覆盖兜底。
+ */
+function dualEmit(logicalNode, physicalNodes) {
+  const parent = logicalNode.parent
+  const ifdef = new Comment({ text: '#ifdef H5' })
+  const endif = new Comment({ text: '#endif' })
+  parent.insertAfter(logicalNode, endif)
+  parent.insertBefore(logicalNode, ifdef)
+  for (const physical of physicalNodes) {
+    parent.insertBefore(ifdef, physical)
+  }
+}
+
+/** 规则内的逻辑声明逐条降级；返回是否有规则被改写（仅用于日志） */
+function rewriteLogicalDeclarations(ruleNode) {
+  const decls = (ruleNode.nodes ?? []).filter((n) => n.type === 'decl')
+  for (const node of decls) {
+    const { prop, value, important } = node
+
+    if (prop === 'text-align' && LOGICAL_TEXT_ALIGN[value.trim()]) {
+      dualEmit(node, [physicalDecl(prop, LOGICAL_TEXT_ALIGN[value.trim()], important)])
+      continue
+    }
+
+    if (LOGICAL_RADII[prop]) {
+      dualEmit(node, [physicalDecl(LOGICAL_RADII[prop], value, important)])
+      continue
+    }
+
+    if (INLINE_SHORTHANDS[prop]) {
+      dualEmit(node, INLINE_SHORTHANDS[prop].map((p) => physicalDecl(p, value, important)))
+      continue
+    }
+
+    if (INLINE_LOGICAL_PROPS[prop]) {
+      dualEmit(node, [physicalDecl(INLINE_LOGICAL_PROPS[prop], value, important)])
+      continue
+    }
+
+    if (LOGICAL_PROP_RE.test(prop)) {
+      throw new Error(
+        `[build-styles] 未支持的逻辑属性：${prop}（WXSS 不识别，请在 build-styles.mjs 补登记降级映射）`,
+      )
+    }
+  }
 }
 
 /**
@@ -238,16 +356,24 @@ const purifyPlugin = () => ({
       ruleNode.selector = rewriteTagSelector(ruleNode.selector, 'img', 'lh-img')
     }
 
-    // ③ 仅 H5 的规则条件编译包裹（打标记防 walk 重新访问时无限递归）
+    // ③ 仅 H5 的规则条件编译包裹（打标记防 walk 重新访问时无限递归）。
+    //    含 [dir='rtl'] 的规则整块只进 H5——WXSS 无属性选择器，内部声明无需降级
     if (isH5Only(ruleNode.selector)) {
       wrapH5ConditionalNode(ruleNode)
+      return
     }
+
+    // ⑦ 逻辑属性双发（WXSS 不识别 inline/start/end：物理兜底 + #ifdef H5 逻辑覆盖）
+    rewriteLogicalDeclarations(ruleNode)
   },
 
-  // ⑤ prefers-* 媒体查询整体包裹
+  // ⑤ prefers-* 媒体查询整体包裹；仅 RTL 引用的 @keyframes *-rtl 同样只进 H5
   AtRule(atRuleNode) {
     if (atRuleNode[WRAPPED]) return
     if (atRuleNode.name === 'media' && isPrefersMedia(atRuleNode.params)) {
+      wrapH5ConditionalNode(atRuleNode)
+    }
+    if (atRuleNode.name === 'keyframes' && /-rtl$/.test(atRuleNode.params)) {
       wrapH5ConditionalNode(atRuleNode)
     }
   },
