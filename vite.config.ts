@@ -29,4 +29,7 @@ export default defineConfig({
       },
     },
   },
+  server: {
+    port: 5176, // 家族端口表：沙箱组 5173-5176，uni h5 沙箱固定 5176（消解与 plus 沙箱默认口的冲突）
+  },
 })

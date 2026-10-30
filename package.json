@@ -75,7 +75,7 @@
     "release": "changeset publish",
     "release:push": "node scripts/push-release.mjs",
     "prepublishOnly": "pnpm build:assets && pnpm verify:wxss",
-    "docs:dev": "vitepress dev docs --port 5179",
+    "docs:dev": "vitepress dev docs --port 5187",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"
   },
@@ -90,7 +90,6 @@
     "@dcloudio/uni-stat": "3.0.0-alpha-5030120260930001",
     "@dcloudio/vite-plugin-uni": "3.0.0-alpha-5030120260930001",
     "@eslint/js": "^10.0.1",
-    "@lh-ui/share": "^0.4.0",
     "@types/node": "^26.6.4",
     "@vitejs/plugin-vue": "^6.0.9",
     "@vue/compiler-sfc": "^3.5.43",
