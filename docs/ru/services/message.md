@@ -79,5 +79,5 @@ message.config({ duration: 2000, max: 5, offset: 20 })
 ::: tip Отличия от версии для Vue3
 - **Нет `appendTo`**: на web-стороне монтирование идёт в `document.body`, в Mini Program такого понятия нет — положение точки монтирования определяется расположением `<lh-message />` на странице.
 - Анимации появления и скрытия — на CSS transition + setTimeout с выровненной длительностью (`transitionend` в Mini Program ненадёжен).
-- Компонент класса Notification в первом выпуске отсутствует, используйте Message.
+- Для уведомлений используйте сервис Notification (см. группу «Сервисы»).
 :::

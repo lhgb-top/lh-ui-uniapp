@@ -39,6 +39,32 @@ const text = ref('')
 </template>
 ```
 
+## 標籤位置
+
+`label` 現已真正渲染（此前 prop 宣告未接線）。預設 `float` 浮動標籤——聚焦或有值時浮到左上缺口；
+`labelPosition` 可切換為靜態位置 `top` / `bottom` / `left` / `right`：
+
+```vue
+<template>
+  <!-- 預設：浮動標籤（聚焦/有值浮到左上缺口） -->
+  <lh-input v-model="text" label="用户名" />
+  <!-- 上方 -->
+  <lh-input v-model="text" label="用户名" label-position="top" />
+  <!-- 下方 -->
+  <lh-input v-model="text" label="用户名" label-position="bottom" />
+  <!-- 左側定寬（labelWidth 僅 left / right 生效） -->
+  <lh-input v-model="text" label="用户名" label-position="left" :label-width="80" />
+  <!-- 右側 -->
+  <lh-input v-model="text" label="用户名" label-position="right" />
+</template>
+```
+
+::: warning 【uni-app 差異】
+- `float` 的 size 檔位垂直微調依賴 `:has` 選擇器（WXSS 不支援），小程式端僅 `medium` 檔精確、
+  其餘檔位 label 垂直位置略偏；靜態位置（`top` / `left` / `right` / `bottom`）全端可用。
+- `textarea` + `float` 的浮起位置已由內聯樣式兜底，全端可用。
+:::
+
 ## Props
 
 | 屬性 | 說明 | 類型 | 預設值 |
@@ -62,7 +88,9 @@ const text = ref('')
 | password | 密碼模式 | `boolean` | `false` |
 | rows | textarea 行數 | `number` | — |
 | autosize | textarea 自適應高度（MP 的 auto-height） | `boolean` | `false` |
-| label | 標籤文案 | `string` | — |
+| label | 浮動標籤（預設）；配合 labelPosition 可切換位置 | `string` | — |
+| labelPosition | 標籤位置 | `'float' \| 'top' \| 'left' \| 'right' \| 'bottom'` | `'float'` |
+| labelWidth | 標籤定寬（僅 left / right 生效；數字按 px，字串原樣） | `string \| number` | — |
 | customClass | 自訂類別名 | `string` | — |
 | themeVars | 元件級主題變數 | `Record<string, string>` | — |
 | sx | 快速版面配置屬性 | `LhSxProps` | — |

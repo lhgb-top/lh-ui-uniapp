@@ -39,6 +39,30 @@ prop، **ولا** تكتب `::placeholder` في CSS (فبوابة وقت الب�
 </template>
 ```
 
+## موضع التسمية
+
+أصبح `label` يُرسم فعليًا الآن (كانت الخاصية مُعرَّفة سابقًا دون توصيل). القيمة الافتراضية `float` هي تسمية عائمة — ترتفع إلى الفجوة العلوية اليسرى عند التركيز أو عند وجود قيمة؛ و`labelPosition` يبدّل إلى المواضع الثابتة `top` / `bottom` / `left` / `right`:
+
+```vue
+<template>
+  <!-- الافتراضي: تسمية عائمة (ترتفع إلى الفجوة العلوية اليسرى عند التركيز/وجود قيمة) -->
+  <lh-input v-model="text" label="اسم المستخدم" />
+  <!-- أعلى -->
+  <lh-input v-model="text" label="اسم المستخدم" label-position="top" />
+  <!-- أسفل -->
+  <lh-input v-model="text" label="اسم المستخدم" label-position="bottom" />
+  <!-- يسار بعرض ثابت (لا يعمل labelWidth إلا مع left / right) -->
+  <lh-input v-model="text" label="اسم المستخدم" label-position="left" :label-width="80" />
+  <!-- يمين -->
+  <lh-input v-model="text" label="اسم المستخدم" label-position="right" />
+</template>
+```
+
+::: warning فروق uni-app
+- الضبط الرأسي الدقيق لكل مستوى حجم في `float` يعتمد على المحدد `:has` (غير مدعوم في WXSS)؛ في البرنامج المصغر لا يكون دقيقًا إلا بمستوى `medium`، أما المستويات الأخرى فينحرف موضع التسمية الرأسي قليلًا. المواضع الثابتة (`top` / `left` / `right` / `bottom`) تعمل على جميع المنصات.
+- موضع الطفو لـ `textarea` + `float` معالج بالفعل عبر أنماط مضمّنة كحل بديل، ويعمل على جميع المنصات.
+:::
+
 ## Props
 
 | الخاصية | الوصف | النوع | الافتراضي |
@@ -62,7 +86,9 @@ prop، **ولا** تكتب `::placeholder` في CSS (فبوابة وقت الب�
 | password | وضع كلمة المرور | `boolean` | `false` |
 | rows | عدد أسطر textarea | `number` | — |
 | autosize | تكيّف ارتفاع textarea (auto-height في MP) | `boolean` | `false` |
-| label | نص التسمية | `string` | — |
+| label | تسمية عائمة (افتراضي)؛ مع labelPosition يمكن تغيير الموضع | `string` | — |
+| labelPosition | موضع التسمية | `'float' \| 'top' \| 'left' \| 'right' \| 'bottom'` | `'float'` |
+| labelWidth | عرض ثابت للتسمية (لا يعمل إلا مع left / right؛ الأرقام تُفسَّر بالبكسل والسلاسل تُستخدم كما هي) | `string \| number` | — |
 | customClass | صنف مخصّص | `string` | — |
 | themeVars | متغيّرات سمة خاصة بالمكوّن | `Record<string, string>` | — |
 | sx | خصائص تخطيط سريعة | `LhSxProps` | — |

@@ -43,11 +43,15 @@ const onSubmit = async () => {
 | --- | --- | --- | --- |
 | model | Объект данных формы (обязательный) | `Record<string, unknown>` | — |
 | rules | Правила валидации (ключи — имена prop) | `Record<string, LhFormRule[]>` | — |
-| labelPosition | Положение метки | `'left' \| 'right' \| 'top'` | `'right'` |
+| labelPosition | Положение метки: `left` / `right` = выравнивание текста метки слева от контрола (соглашение Element Plus); `top` = сверху; `bottom` = под контролом | `'left' \| 'right' \| 'top' \| 'bottom'` | `'right'` |
 | labelWidth | Ширина метки | `string \| number` | — |
 | inline | Строчная раскладка | `boolean` | `false` |
 | customClass | Пользовательский класс | `string` | — |
 | sx | Быстрые свойства раскладки | `LhSxProps` | — |
+
+::: tip
+Классы положения `labelPosition` выровнены с источником стилей share: `lh-form-item--top` / `lh-form-item--bottom` / `lh-form-item--left` / `lh-form-item--right`; их можно точечно донастроить в стилях страницы по имени класса.
+:::
 
 ## Form Methods (вызываются через ref)
 

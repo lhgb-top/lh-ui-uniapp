@@ -39,6 +39,30 @@ CSS에 `::placeholder`를 **쓰지 마십시오**(빌드 시 게이트도 차단
 </template>
 ```
 
+## 레이블 위치
+
+`label`이 이제 실제로 렌더링됩니다(이전에는 prop이 선언만 되고 연결되지 않았습니다). 기본값인 `float`는 플로팅 레이블로, 포커스되거나 값이 있으면 왼쪽 상단 홈으로 떠오릅니다. `labelPosition`으로 `top` / `bottom` / `left` / `right`의 정적 위치로 전환할 수 있습니다:
+
+```vue
+<template>
+  <!-- 기본값: 플로팅 레이블(포커스/값 입력 시 왼쪽 상단 홈으로 떠오름) -->
+  <lh-input v-model="text" label="사용자 이름" />
+  <!-- 위 -->
+  <lh-input v-model="text" label="사용자 이름" label-position="top" />
+  <!-- 아래 -->
+  <lh-input v-model="text" label="사용자 이름" label-position="bottom" />
+  <!-- 왼쪽 고정 너비(labelWidth는 left / right에서만 적용) -->
+  <lh-input v-model="text" label="사용자 이름" label-position="left" :label-width="80" />
+  <!-- 오른쪽 -->
+  <lh-input v-model="text" label="사용자 이름" label-position="right" />
+</template>
+```
+
+::: warning uni-app 차이점
+- `float`의 크기 단계별 수직 미세 조정은 `:has` 선택자에 의존합니다(WXSS는 미지원). 미니프로그램에서는 `medium` 단계만 정확하고 다른 단계에서는 레이블의 수직 위치가 약간 어긋납니다. 정적 위치(`top` / `left` / `right` / `bottom`)는 전 플랫폼에서 사용할 수 있습니다.
+- `textarea` + `float`의 떠오른 위치는 이미 인라인 스타일로 폴백 처리되어 전 플랫폼에서 사용할 수 있습니다.
+:::
+
 ## Props
 
 | 속성 | 설명 | 타입 | 기본값 |
@@ -62,7 +86,9 @@ CSS에 `::placeholder`를 **쓰지 마십시오**(빌드 시 게이트도 차단
 | password | 비밀번호 모드 | `boolean` | `false` |
 | rows | textarea 줄 수 | `number` | — |
 | autosize | textarea 높이 자동 조절(MP의 auto-height) | `boolean` | `false` |
-| label | 레이블 문구 | `string` | — |
+| label | 플로팅 레이블(기본값). labelPosition과 함께 위치 전환 가능 | `string` | — |
+| labelPosition | 레이블 위치 | `'float' \| 'top' \| 'left' \| 'right' \| 'bottom'` | `'float'` |
+| labelWidth | 레이블 고정 너비(left / right에서만 적용. 숫자는 px, 문자열은 그대로) | `string \| number` | — |
 | customClass | 커스텀 클래스명 | `string` | — |
 | themeVars | 컴포넌트 수준 테마 변수 | `Record<string, string>` | — |
 | sx | 빠른 레이아웃 속성 | `LhSxProps` | — |

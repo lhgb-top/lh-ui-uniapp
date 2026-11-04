@@ -43,11 +43,16 @@ const onSubmit = async () => {
 | --- | --- | --- | --- |
 | model | 表單資料物件（必填） | `Record<string, unknown>` | — |
 | rules | 驗證規則（鍵為 prop 名） | `Record<string, LhFormRule[]>` | — |
-| labelPosition | 標籤位置 | `'left' \| 'right' \| 'top'` | `'right'` |
+| labelPosition | 標籤位置：`left` / `right` = 控制項左側標籤的文字對齊（Element Plus 口徑）；`top` = 上方；`bottom` = 控制項下方 | `'left' \| 'right' \| 'top' \| 'bottom'` | `'right'` |
 | labelWidth | 標籤寬度 | `string \| number` | — |
 | inline | 行內版面配置 | `boolean` | `false` |
 | customClass | 自訂類別名 | `string` | — |
 | sx | 快速版面配置屬性 | `LhSxProps` | — |
+
+::: tip
+`labelPosition` 的位置類別名已與 share 樣式源對齊：`lh-form-item--top` / `lh-form-item--bottom` /
+`lh-form-item--left` / `lh-form-item--right`，可在頁面樣式中按類別名微調。
+:::
 
 ## Form Methods（透過 ref 呼叫）
 

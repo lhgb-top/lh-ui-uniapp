@@ -44,11 +44,15 @@ const onSubmit = async () => {
 | --- | --- | --- | --- |
 | model | كائن بيانات النموذج (مطلوب) | `Record<string, unknown>` | — |
 | rules | قواعد التحقق (المفاتيح هي أسماء prop) | `Record<string, LhFormRule[]>` | — |
-| labelPosition | موضع التسمية | `'left' \| 'right' \| 'top'` | `'right'` |
+| labelPosition | موضع التسمية: `left` / `right` = محاذاة نص التسمية على يسار عنصر التحكم (معيار Element Plus)؛ `top` = أعلى؛ `bottom` = أسفل عنصر التحكم | `'left' \| 'right' \| 'top' \| 'bottom'` | `'right'` |
 | labelWidth | عرض التسمية | `string \| number` | — |
 | inline | تخطيط ضمن السطر | `boolean` | `false` |
 | customClass | صنف مخصّص | `string` | — |
 | sx | خصائص تخطيط سريعة | `LhSxProps` | — |
+
+::: tip
+أصناف المواضع الخاصة بـ `labelPosition` متوائمة مع مصدر أنماط share: `lh-form-item--top` / `lh-form-item--bottom` / `lh-form-item--left` / `lh-form-item--right`، ويمكن الضبط الدقيق في أنماط الصفحة حسب الصنف.
+:::
 
 ## Form Methods (تُستدعى عبر ref)
 

@@ -2,6 +2,9 @@
 layout: home
 
 hero:
+  image:
+    src: /logo-banner.png
+    alt: lh-ui 品牌横幅
   name: lh-ui uniapp
   text: مكتبة مكوّنات uni-app
   tagline: شيفرة واحدة، H5 + برنامج WeChat المصغر؛ منطق المكوّنات ومصدر الأنماط مشترك مع نسخ Vue3 / Vue2 / React

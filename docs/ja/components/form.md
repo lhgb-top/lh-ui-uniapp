@@ -43,11 +43,15 @@ const onSubmit = async () => {
 | --- | --- | --- | --- |
 | model | フォームデータオブジェクト（必須） | `Record<string, unknown>` | — |
 | rules | バリデーションルール（キーは prop 名） | `Record<string, LhFormRule[]>` | — |
-| labelPosition | ラベルの位置 | `'left' \| 'right' \| 'top'` | `'right'` |
+| labelPosition | ラベルの位置：`left` / `right` = コントロールの左側ラベルの文字揃え（Element Plus の基準）；`top` = 上；`bottom` = コントロールの下 | `'left' \| 'right' \| 'top' \| 'bottom'` | `'right'` |
 | labelWidth | ラベルの幅 | `string \| number` | — |
 | inline | インラインレイアウト | `boolean` | `false` |
 | customClass | カスタムクラス名 | `string` | — |
 | sx | クイックレイアウトプロパティ | `LhSxProps` | — |
+
+::: tip
+`labelPosition` の位置クラス名は share のスタイルソースと整合しています：`lh-form-item--top` / `lh-form-item--bottom` / `lh-form-item--left` / `lh-form-item--right`。ページスタイルでクラス名単位に微調整できます。
+:::
 
 ## Form Methods（ref 経由で呼び出す）
 

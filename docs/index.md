@@ -2,6 +2,9 @@
 layout: home
 
 hero:
+  image:
+    src: /logo-banner.png
+    alt: lh-ui 品牌横幅
   name: lh-ui uniapp
   text: uni-app 组件库
   tagline: 一套代码，H5 + 微信小程序；组件逻辑与样式源与 Vue3 / Vue2 / React 端同源

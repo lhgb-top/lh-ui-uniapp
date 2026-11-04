@@ -44,11 +44,15 @@ const onSubmit = async () => {
 | --- | --- | --- | --- |
 | model | 폼 데이터 객체(필수) | `Record<string, unknown>` | — |
 | rules | 검증 규칙(키가 prop 이름) | `Record<string, LhFormRule[]>` | — |
-| labelPosition | 레이블 위치 | `'left' \| 'right' \| 'top'` | `'right'` |
+| labelPosition | 레이블 위치: `left` / `right` = 컨트롤 왼쪽 레이블의 텍스트 정렬(Element Plus 기준); `top` = 위; `bottom` = 컨트롤 아래 | `'left' \| 'right' \| 'top' \| 'bottom'` | `'right'` |
 | labelWidth | 레이블 너비 | `string \| number` | — |
 | inline | 인라인 레이아웃 | `boolean` | `false` |
 | customClass | 커스텀 클래스명 | `string` | — |
 | sx | 빠른 레이아웃 속성 | `LhSxProps` | — |
+
+::: tip
+`labelPosition`의 위치 클래스명은 share 스타일 소스와 정렬되어 있습니다: `lh-form-item--top` / `lh-form-item--bottom` / `lh-form-item--left` / `lh-form-item--right`. 페이지 스타일에서 클래스명으로 미세 조정할 수 있습니다.
+:::
 
 ## Form Methods(ref로 호출)
 

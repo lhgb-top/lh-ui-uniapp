@@ -2,6 +2,9 @@
 layout: home
 
 hero:
+  image:
+    src: /logo-banner.png
+    alt: lh-ui 品牌横幅
   name: lh-ui uniapp
   text: Bibliothèque de composants uni-app
   tagline: Une seule base de code, H5 + Mini Programme WeChat ; la logique des composants et les sources de styles sont communes avec les versions Vue3 / Vue2 / React

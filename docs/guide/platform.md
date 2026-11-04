@@ -25,6 +25,7 @@
 | dialog | 完整 | 降级 | root-portal；**focus-trap / lockScroll 仅 H5**，MP 由遮罩拦截兜底 |
 | tooltip | 完整 | 降级 | 两帧度量定位；**无 hover**，MP 端点击 / 触摸触发 |
 | message / loading | 完整 | 完整 | 挂载点模式（小程序无 document，不能 JS 创建 DOM） |
+| calendar | 完整 | 完整 | **view 自绘 7 列网格**（无原生日期控件、无 DOM 度量，移动端天然友好全端一致）；**键盘网格导航与 input 模式的点击外部收起仅 H5**（MP 无键盘事件 / 无 document）；禁用日由 `--disabled` 类名承载外观（view 无 `:disabled` 伪类，SFC 内联兜底） |
 
 ## 微信小程序的具体限制与替代
 

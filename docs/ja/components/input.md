@@ -39,6 +39,30 @@ CSS に `::placeholder` を**書かない**でください（ビルド時のゲ�
 </template>
 ```
 
+## ラベルの位置
+
+`label` はついに実際にレンダリングされるようになりました（以前は prop の宣言だけで接続されていませんでした）。デフォルトの `float` はフローティングラベルで、フォーカス時または値があると左上の欠口へ浮き上がります。`labelPosition` で `top` / `bottom` / `left` / `right` の静的な位置へ切り替えられます：
+
+```vue
+<template>
+  <!-- デフォルト：フローティングラベル（フォーカス/入力値で左上の欠口へ浮く） -->
+  <lh-input v-model="text" label="ユーザー名" />
+  <!-- 上 -->
+  <lh-input v-model="text" label="ユーザー名" label-position="top" />
+  <!-- 下 -->
+  <lh-input v-model="text" label="ユーザー名" label-position="bottom" />
+  <!-- 左・固定幅（labelWidth は left / right のみ有効） -->
+  <lh-input v-model="text" label="ユーザー名" label-position="left" :label-width="80" />
+  <!-- 右 -->
+  <lh-input v-model="text" label="ユーザー名" label-position="right" />
+</template>
+```
+
+::: warning uni-app における差異
+- `float` のサイズ段位ごとの垂直微調整は `:has` セレクターに依存します（WXSS は非対応）。ミニプログラムでは `medium` 段のみ正確で、他の段位ではラベルの垂直位置が多少ずれます。静的な位置（`top` / `left` / `right` / `bottom`）は全プラットフォームで使用可能です。
+- `textarea` + `float` の浮き上がり位置はすでにインラインスタイルでフォールバックされており、全プラットフォームで使用可能です。
+:::
+
 ## Props
 
 | プロパティ | 説明 | 型 | デフォルト値 |
@@ -62,7 +86,9 @@ CSS に `::placeholder` を**書かない**でください（ビルド時のゲ�
 | password | パスワードモード | `boolean` | `false` |
 | rows | textarea の行数 | `number` | — |
 | autosize | textarea の高さ自動調整（MP の auto-height） | `boolean` | `false` |
-| label | ラベルの文言 | `string` | — |
+| label | フローティングラベル（デフォルト）。labelPosition と組み合わせて位置を切り替え | `string` | — |
+| labelPosition | ラベルの位置 | `'float' \| 'top' \| 'left' \| 'right' \| 'bottom'` | `'float'` |
+| labelWidth | ラベルの固定幅（left / right のみ有効。数値は px、文字列はそのまま） | `string \| number` | — |
 | customClass | カスタムクラス名 | `string` | — |
 | themeVars | コンポーネントレベルのテーマ変数 | `Record<string, string>` | — |
 | sx | クイックレイアウトプロパティ | `LhSxProps` | — |

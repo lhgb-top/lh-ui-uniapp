@@ -38,6 +38,30 @@ El WXSS del Mini Programa de WeChat no admite el pseudoelemento `::placeholder`.
 </template>
 ```
 
+## Posición de la etiqueta
+
+`label` ahora sí se renderiza (antes la prop estaba declarada pero sin conectar). El valor por defecto `float` es una etiqueta flotante — sube a la muesca superior izquierda al enfocar o cuando hay valor; `labelPosition` permite cambiar a las posiciones estáticas `top` / `bottom` / `left` / `right`:
+
+```vue
+<template>
+  <!-- Por defecto: etiqueta flotante (sube a la muesca superior izquierda al enfocar o con valor) -->
+  <lh-input v-model="text" label="Nombre de usuario" />
+  <!-- Arriba -->
+  <lh-input v-model="text" label="Nombre de usuario" label-position="top" />
+  <!-- Abajo -->
+  <lh-input v-model="text" label="Nombre de usuario" label-position="bottom" />
+  <!-- Izquierda con ancho fijo (labelWidth solo surte efecto en left / right) -->
+  <lh-input v-model="text" label="Nombre de usuario" label-position="left" :label-width="80" />
+  <!-- Derecha -->
+  <lh-input v-model="text" label="Nombre de usuario" label-position="right" />
+</template>
+```
+
+::: warning Diferencias de uni-app
+- El ajuste vertical fino por talla de `float` depende del selector `:has` (no soportado por WXSS); en el Mini Programa solo la talla `medium` es exacta y en las demás la posición vertical de la etiqueta queda ligeramente desviada. Las posiciones estáticas (`top` / `left` / `right` / `bottom`) funcionan en todas las plataformas.
+- La posición flotante de `textarea` + `float` ya está resuelta con estilos en línea y funciona en todas las plataformas.
+:::
+
 ## Props
 
 | Prop | Descripción | Tipo | Predeterminado |
@@ -61,7 +85,9 @@ El WXSS del Mini Programa de WeChat no admite el pseudoelemento `::placeholder`.
 | password | Modo contraseña | `boolean` | `false` |
 | rows | Número de líneas del textarea | `number` | — |
 | autosize | Autoajuste de altura del textarea (el `auto-height` de MP) | `boolean` | `false` |
-| label | Texto de la etiqueta | `string` | — |
+| label | Etiqueta flotante (por defecto); con labelPosition se puede cambiar de posición | `string` | — |
+| labelPosition | Posición de la etiqueta | `'float' \| 'top' \| 'left' \| 'right' \| 'bottom'` | `'float'` |
+| labelWidth | Ancho fijo de la etiqueta (solo surte efecto en left / right; los números se interpretan en px, las cadenas se usan tal cual) | `string \| number` | — |
 | customClass | Clase personalizada | `string` | — |
 | themeVars | Variables de tema a nivel de componente | `Record<string, string>` | — |
 | sx | Props rápidas de disposición | `LhSxProps` | — |

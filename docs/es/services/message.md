@@ -78,5 +78,5 @@ message.config({ duration: 2000, max: 5, offset: 20 })
 ::: tip Diferencias frente a la versión Vue3
 - **No hay `appendTo`**: la versión web lo monta en `document.body`, concepto que no existe en el Mini Programa; la posición del punto de montaje la determina el lugar que ocupa `<lh-message />` en la página.
 - Las animaciones de entrada y salida usan CSS transition + setTimeout para alinear la duración (`transitionend` no es fiable en el Mini Programa).
-- El componente de notificaciones (Notification) no está en la primera versión; se sustituye por Message.
+- Para notificaciones, use el servicio Notification (véase el grupo «Servicios»).
 :::

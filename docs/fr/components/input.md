@@ -38,6 +38,30 @@ Le WXSS du Mini Programme WeChat ne supporte pas le pseudo-élément `::placehol
 </template>
 ```
 
+## Position du libellé
+
+`label` est désormais réellement rendu (auparavant la prop était déclarée mais non câblée). Par défaut, `float` donne un libellé flottant — il remonte dans l'échancrure en haut à gauche au focus ou dès qu'il y a une valeur ; `labelPosition` permet de passer aux positions statiques `top` / `bottom` / `left` / `right` :
+
+```vue
+<template>
+  <!-- Par défaut : libellé flottant (remonte dans l'échancrure en haut à gauche au focus/avec valeur) -->
+  <lh-input v-model="text" label="Nom d'utilisateur" />
+  <!-- Haut -->
+  <lh-input v-model="text" label="Nom d'utilisateur" label-position="top" />
+  <!-- Bas -->
+  <lh-input v-model="text" label="Nom d'utilisateur" label-position="bottom" />
+  <!-- Gauche avec largeur fixe (labelWidth ne s'applique qu'à left / right) -->
+  <lh-input v-model="text" label="Nom d'utilisateur" label-position="left" :label-width="80" />
+  <!-- Droite -->
+  <lh-input v-model="text" label="Nom d'utilisateur" label-position="right" />
+</template>
+```
+
+::: warning Différences uni-app
+- Le réglage vertical fin par taille de `float` repose sur le sélecteur `:has` (non supporté par WXSS) ; sur le Mini Programme, seule la taille `medium` est exacte, et pour les autres tailles la position verticale du libellé est légèrement décalée. Les positions statiques (`top` / `left` / `right` / `bottom`) fonctionnent sur toutes les plateformes.
+- La position flottante de `textarea` + `float` est déjà rattrapée par des styles en ligne et fonctionne sur toutes les plateformes.
+:::
+
 ## Props
 
 | Prop | Description | Type | Valeur par défaut |
@@ -61,7 +85,9 @@ Le WXSS du Mini Programme WeChat ne supporte pas le pseudo-élément `::placehol
 | password | Mode mot de passe | `boolean` | `false` |
 | rows | Nombre de lignes du textarea | `number` | — |
 | autosize | Hauteur adaptive du textarea (auto-height du MP) | `boolean` | `false` |
-| label | Texte du libellé | `string` | — |
+| label | Libellé flottant (par défaut) ; combinez avec labelPosition pour changer de position | `string` | — |
+| labelPosition | Position du libellé | `'float' \| 'top' \| 'left' \| 'right' \| 'bottom'` | `'float'` |
+| labelWidth | Largeur fixe du libellé (ne s'applique qu'à left / right ; les nombres sont en px, les chaînes sont utilisées telles quelles) | `string \| number` | — |
 | customClass | Nom de classe personnalisé | `string` | — |
 | themeVars | Variables de thème de niveau composant | `Record<string, string>` | — |
 | sx | Propriétés de mise en page rapide | `LhSxProps` | — |

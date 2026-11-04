@@ -39,6 +39,30 @@ WXSS WeChat Mini Program не поддерживает псевдоэлемен�
 </template>
 ```
 
+## Положение метки
+
+`label` теперь действительно рендерится (раньше prop был объявлен, но не подключён). По умолчанию `float` — плавающая метка: при фокусе или наличии значения она поднимается в выемку вверху слева; `labelPosition` переключает на статические положения `top` / `bottom` / `left` / `right`:
+
+```vue
+<template>
+  <!-- По умолчанию: плавающая метка (поднимается в выемку вверху слева при фокусе/со значением) -->
+  <lh-input v-model="text" label="Имя пользователя" />
+  <!-- Сверху -->
+  <lh-input v-model="text" label="Имя пользователя" label-position="top" />
+  <!-- Снизу -->
+  <lh-input v-model="text" label="Имя пользователя" label-position="bottom" />
+  <!-- Слева с фиксированной шириной (labelWidth действует только для left / right) -->
+  <lh-input v-model="text" label="Имя пользователя" label-position="left" :label-width="80" />
+  <!-- Справа -->
+  <lh-input v-model="text" label="Имя пользователя" label-position="right" />
+</template>
+```
+
+::: warning Отличия uni-app
+- Тонкая вертикальная подгонка `float` по размерам опирается на селектор `:has` (WXSS его не поддерживает); в Mini Program точен только размер `medium`, на остальных размерах вертикальное положение метки слегка смещено. Статические положения (`top` / `left` / `right` / `bottom`) работают на всех платформах.
+- Плавающее положение `textarea` + `float` уже подстраховано инлайновыми стилями и работает на всех платформах.
+:::
+
 ## Props
 
 | Проп | Описание | Тип | По умолчанию |
@@ -62,7 +86,9 @@ WXSS WeChat Mini Program не поддерживает псевдоэлемен�
 | password | Режим пароля | `boolean` | `false` |
 | rows | Количество строк textarea | `number` | — |
 | autosize | Авторазмер высоты textarea (auto-height в MP) | `boolean` | `false` |
-| label | Текст метки | `string` | — |
+| label | Плавающая метка (по умолчанию); вместе с labelPosition можно менять положение | `string` | — |
+| labelPosition | Положение метки | `'float' \| 'top' \| 'left' \| 'right' \| 'bottom'` | `'float'` |
+| labelWidth | Фиксированная ширина метки (действует только для left / right; числа трактуются как px, строки используются как есть) | `string \| number` | — |
 | customClass | Пользовательский класс | `string` | — |
 | themeVars | Переменные темы компонента | `Record<string, string>` | — |
 | sx | Быстрые свойства раскладки | `LhSxProps` | — |

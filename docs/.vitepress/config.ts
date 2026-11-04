@@ -233,12 +233,20 @@ const componentItems: { slug: string; labels: Labels }[] = [
     labels: { 'zh-CN': 'ConfigProvider 全局配置', 'en-US': 'ConfigProvider', 'zh-TW': 'ConfigProvider 全域配置', 'ja-JP': 'ConfigProvider グローバル設定', 'ko-KR': 'ConfigProvider 전역 설정', es: 'ConfigProvider (configuración global)', ar: 'ConfigProvider (إعداد عام)', 'fr-FR': 'ConfigProvider (configuration globale)', ru: 'ConfigProvider (глобальная настройка)' },
   },
   {
+    slug: 'descriptions',
+    labels: { 'zh-CN': 'Descriptions 描述列表', 'en-US': 'Descriptions', 'zh-TW': 'Descriptions 描述列表', 'ja-JP': 'Descriptions 説明リスト', 'ko-KR': 'Descriptions 설명 목록', es: 'Descriptions (lista de descripciones)', ar: 'Descriptions (قائمة الوصف)', 'fr-FR': 'Descriptions (liste de descriptions)', ru: 'Descriptions (список описаний)' },
+  },
+  {
     slug: 'button',
     labels: { 'zh-CN': 'Button 按钮', 'en-US': 'Button', 'zh-TW': 'Button 按鈕', 'ja-JP': 'Button ボタン', 'ko-KR': 'Button 버튼', es: 'Botón', ar: 'زر Button', 'fr-FR': 'Bouton', ru: 'Кнопка' },
   },
   {
     slug: 'icon',
     labels: { 'zh-CN': 'Icon 图标', 'en-US': 'Icon', 'zh-TW': 'Icon 圖示', 'ja-JP': 'Icon アイコン', 'ko-KR': 'Icon 아이콘', es: 'Icono', ar: 'أيقونة Icon', 'fr-FR': 'Icône', ru: 'Значок' },
+  },
+  {
+    slug: 'layout',
+    labels: { 'zh-CN': 'Layout 布局容器', 'en-US': 'Layout', 'zh-TW': 'Layout 版面容器', 'ja-JP': 'Layout レイアウト', 'ko-KR': 'Layout 레이아웃', es: 'Layout (contenedor de diseño)', ar: 'Layout (حاوية التخطيط)', 'fr-FR': 'Layout (conteneur de mise en page)', ru: 'Layout (контейнер разметки)' },
   },
   {
     slug: 'space',
@@ -269,6 +277,10 @@ const componentItems: { slug: string; labels: Labels }[] = [
     labels: { 'zh-CN': 'Switch 开关', 'en-US': 'Switch', 'zh-TW': 'Switch 開關', 'ja-JP': 'Switch スイッチ', 'ko-KR': 'Switch 스위치', es: 'Interruptor', ar: 'مفتاح Switch', 'fr-FR': 'Interrupteur', ru: 'Переключатель' },
   },
   {
+    slug: 'input-number',
+    labels: { 'zh-CN': 'InputNumber 计数器', 'en-US': 'InputNumber', 'zh-TW': 'InputNumber 計數器', 'ja-JP': 'InputNumber 数値入力', 'ko-KR': 'InputNumber 숫자 입력', es: 'InputNumber (entrada numérica)', ar: 'InputNumber (إدخال رقمي)', 'fr-FR': 'InputNumber (saisie numérique)', ru: 'InputNumber (числовой ввод)' },
+  },
+  {
     slug: 'tag',
     labels: { 'zh-CN': 'Tag 标签', 'en-US': 'Tag', 'zh-TW': 'Tag 標籤', 'ja-JP': 'Tag タグ', 'ko-KR': 'Tag 태그', es: 'Etiqueta', ar: 'وسم Tag', 'fr-FR': 'Étiquette', ru: 'Тег' },
   },
@@ -287,6 +299,10 @@ const componentItems: { slug: string; labels: Labels }[] = [
   {
     slug: 'skeleton',
     labels: { 'zh-CN': 'Skeleton 骨架屏', 'en-US': 'Skeleton', 'zh-TW': 'Skeleton 骨架屏', 'ja-JP': 'Skeleton スケルトン', 'ko-KR': 'Skeleton 스켈레톤', es: 'Esqueleto', ar: 'هيكل Skeleton', 'fr-FR': 'Squelette', ru: 'Скелетон' },
+  },
+  {
+    slug: 'alert',
+    labels: { 'zh-CN': 'Alert 警告', 'en-US': 'Alert', 'zh-TW': 'Alert 警告', 'ja-JP': 'Alert アラート', 'ko-KR': 'Alert 경고', es: 'Alerta', ar: 'تنبيه Alert', 'fr-FR': 'Alerte', ru: 'Предупреждение' },
   },
   {
     slug: 'empty',
@@ -308,6 +324,110 @@ const componentItems: { slug: string; labels: Labels }[] = [
     slug: 'tooltip',
     labels: { 'zh-CN': 'Tooltip 文字提示', 'en-US': 'Tooltip', 'zh-TW': 'Tooltip 文字提示', 'ja-JP': 'Tooltip ツールチップ', 'ko-KR': 'Tooltip 툴팁', es: 'Tooltip (información sobre herramientas)', ar: 'Tooltip (تلميح)', 'fr-FR': 'Tooltip (infobulle)', ru: 'Tooltip (подсказка)' },
   },
+  {
+    slug: 'breadcrumb',
+    labels: { 'zh-CN': 'Breadcrumb 面包屑', 'en-US': 'Breadcrumb', 'zh-TW': 'Breadcrumb 麵包屑', 'ja-JP': 'Breadcrumb パンくず', 'ko-KR': 'Breadcrumb 이동 경로', es: 'Breadcrumb (insignia de navegación)', ar: 'Breadcrumb (مسار التنقل)', 'fr-FR': 'Breadcrumb (fil d\'Ariane)', ru: 'Breadcrumb (хлебные крошки)' },
+  },
+  {
+    slug: 'statistic',
+    labels: { 'zh-CN': 'Statistic 统计数值', 'en-US': 'Statistic', 'zh-TW': 'Statistic 統計數值', 'ja-JP': 'Statistic 統計数値', 'ko-KR': 'Statistic 통계 수치', es: 'Statistic (valor estadístico)', ar: 'Statistic (قيمة إحصائية)', 'fr-FR': 'Statistic (valeur statistique)', ru: 'Statistic (статистика)' },
+  },
+  {
+    slug: 'spinner',
+    labels: { 'zh-CN': 'Spinner 加载圈', 'en-US': 'Spinner', 'zh-TW': 'Spinner 載入圈', 'ja-JP': 'Spinner スピナー', 'ko-KR': 'Spinner 스피너', es: 'Spinner (indicador de carga)', ar: 'Spinner (دائرة التحميل)', 'fr-FR': 'Spinner (cercle de chargement)', ru: 'Spinner (кружок загрузки)' },
+  },
+  {
+    slug: 'tabs',
+    labels: { 'zh-CN': 'Tabs 标签页', 'en-US': 'Tabs', 'zh-TW': 'Tabs 標籤頁', 'ja-JP': 'Tabs タブ', 'ko-KR': 'Tabs 탭', es: 'Tabs (pestañas)', ar: 'Tabs (تبويبات)', 'fr-FR': 'Tabs (onglets)', ru: 'Tabs (вкладки)' },
+  },
+  {
+    slug: 'segmented',
+    labels: { 'zh-CN': 'Segmented 分段器', 'en-US': 'Segmented', 'zh-TW': 'Segmented 分段器', 'ja-JP': 'Segmented セグメントコントロール', 'ko-KR': 'Segmented 세그먼트', es: 'Segmented (control segmentado)', ar: 'Segmented (تحكم مجزّأ)', 'fr-FR': 'Segmented (contrôle segmenté)', ru: 'Segmented (сегментированный переключатель)' },
+  },
+  {
+    slug: 'grid',
+    labels: { 'zh-CN': 'Grid 栅格', 'en-US': 'Grid', 'zh-TW': 'Grid 柵格', 'ja-JP': 'Grid グリッド', 'ko-KR': 'Grid 그리드', es: 'Grid (rejilla)', ar: 'Grid (شبكة)', 'fr-FR': 'Grid (grille)', ru: 'Grid (сетка)' },
+  },
+  {
+    slug: 'collapse',
+    labels: { 'zh-CN': 'Collapse 折叠面板', 'en-US': 'Collapse', 'zh-TW': 'Collapse 折疊面板', 'ja-JP': 'Collapse 折りたたみ', 'ko-KR': 'Collapse 접기 패널', es: 'Collapse (panel plegable)', ar: 'Collapse (لوحة قابلة للطي)', 'fr-FR': 'Collapse (panneau repliable)', ru: 'Collapse (сворачиваемая панель)' },
+  },
+  {
+    slug: 'timeline',
+    labels: { 'zh-CN': 'Timeline 时间线', 'en-US': 'Timeline', 'zh-TW': 'Timeline 時間線', 'ja-JP': 'Timeline タイムライン', 'ko-KR': 'Timeline 타임라인', es: 'Timeline (línea de tiempo)', ar: 'Timeline (الجدول الزمني)', 'fr-FR': 'Timeline (chronologie)', ru: 'Timeline (хронология)' },
+  },
+  {
+    slug: 'steps',
+    labels: { 'zh-CN': 'Steps 步骤条', 'en-US': 'Steps', 'zh-TW': 'Steps 步驟條', 'ja-JP': 'Steps ステップバー', 'ko-KR': 'Steps 단계 표시줄', es: 'Steps (pasos)', ar: 'Steps (خطوات)', 'fr-FR': 'Steps (étapes)', ru: 'Steps (этапы)' },
+  },
+  {
+    slug: 'rate',
+    labels: { 'zh-CN': 'Rate 评分', 'en-US': 'Rate', 'zh-TW': 'Rate 評分', 'ja-JP': 'Rate レーティング', 'ko-KR': 'Rate 별점', es: 'Rate (valoración)', ar: 'Rate (تقييم)', 'fr-FR': 'Rate (notation)', ru: 'Rate (рейтинг)' },
+  },
+  {
+    slug: 'pagination',
+    labels: { 'zh-CN': 'Pagination 分页', 'en-US': 'Pagination', 'zh-TW': 'Pagination 分頁', 'ja-JP': 'Pagination ページネーション', 'ko-KR': 'Pagination 페이지네이션', es: 'Pagination (paginación)', ar: 'Pagination (ترقيم الصفحات)', 'fr-FR': 'Pagination (pagination)', ru: 'Pagination (пагинация)' },
+  },
+  {
+    slug: 'image',
+    labels: { 'zh-CN': 'Image 图片', 'en-US': 'Image', 'zh-TW': 'Image 圖片', 'ja-JP': 'Image 画像', 'ko-KR': 'Image 이미지', es: 'Image (imagen)', ar: 'Image (صورة)', 'fr-FR': 'Image (image)', ru: 'Image (изображение)' },
+  },
+  {
+    slug: 'dropdown',
+    labels: { 'zh-CN': 'Dropdown 下拉菜单', 'en-US': 'Dropdown', 'zh-TW': 'Dropdown 下拉選單', 'ja-JP': 'Dropdown ドロップダウン', 'ko-KR': 'Dropdown 드롭다운', es: 'Dropdown (menú desplegable)', ar: 'Dropdown (قائمة منسدلة)', 'fr-FR': 'Dropdown (menu déroulant)', ru: 'Dropdown (выпадающее меню)' },
+  },
+  {
+    slug: 'drawer',
+    labels: { 'zh-CN': 'Drawer 抽屉', 'en-US': 'Drawer', 'zh-TW': 'Drawer 抽屜', 'ja-JP': 'Drawer ドロワー', 'ko-KR': 'Drawer 드로어', es: 'Drawer (panel deslizante)', ar: 'Drawer (لوحة منزلقة)', 'fr-FR': 'Drawer (panneau coulissant)', ru: 'Drawer (выдвижная панель)' },
+  },
+  {
+    slug: 'popover',
+    labels: { 'zh-CN': 'Popover 弹出框', 'en-US': 'Popover', 'zh-TW': 'Popover 彈出框', 'ja-JP': 'Popover ポップオーバー', 'ko-KR': 'Popover 팝오버', es: 'Popover (globo de información)', ar: 'Popover (نافذة منبثقة)', 'fr-FR': 'Popover (fenêtre contextuelle)', ru: 'Popover (всплывающая панель)' },
+  },
+  {
+    slug: 'popconfirm',
+    labels: { 'zh-CN': 'Popconfirm 气泡确认框', 'en-US': 'Popconfirm', 'zh-TW': 'Popconfirm 氣泡確認框', 'ja-JP': 'Popconfirm 確認バルーン', 'ko-KR': 'Popconfirm 확인 풍선', es: 'Popconfirm (confirmación emergente)', ar: 'Popconfirm (تأكيد منبثق)', 'fr-FR': 'Popconfirm (confirmation en bulle)', ru: 'Popconfirm (подтверждение во всплывающем окне)' },
+  },
+  {
+    slug: 'menu',
+    labels: { 'zh-CN': 'Menu 导航菜单', 'en-US': 'Menu', 'zh-TW': 'Menu 導覽選單', 'ja-JP': 'Menu ナビゲーションメニュー', 'ko-KR': 'Menu 내비게이션 메뉴', es: 'Menu (menú de navegación)', ar: 'Menu (قائمة التنقل)', 'fr-FR': 'Menu (menu de navigation)', ru: 'Menu (меню навигации)' },
+  },
+  {
+    slug: 'calendar',
+    labels: { 'zh-CN': 'Calendar 日历', 'en-US': 'Calendar', 'zh-TW': 'Calendar 日曆', 'ja-JP': 'Calendar カレンダー', 'ko-KR': 'Calendar 달력', es: 'Calendar (calendario)', ar: 'Calendar (تقويم)', 'fr-FR': 'Calendar (calendrier)', ru: 'Calendar (календарь)' },
+  },
+  {
+    slug: 'cascader',
+    labels: { 'zh-CN': 'Cascader 级联选择', 'en-US': 'Cascader', 'zh-TW': 'Cascader 級聯選擇', 'ja-JP': 'Cascader カスケード', 'ko-KR': 'Cascader 연캐이드', es: 'Cascader (selector en cascada)', ar: 'Cascader (اختيار متسلسل)', 'fr-FR': 'Cascader (sélecteur en cascade)', ru: 'Cascader (каскадный селектор)' },
+  },
+  {
+    slug: 'date-picker',
+    labels: { 'zh-CN': 'DatePicker 日期选择器', 'en-US': 'DatePicker', 'zh-TW': 'DatePicker 日期選擇器', 'ja-JP': 'DatePicker 日付選択', 'ko-KR': 'DatePicker 날짜 선택', es: 'DatePicker (selector de fecha)', ar: 'DatePicker (منتقي التاريخ)', 'fr-FR': 'DatePicker (sélecteur de date)', ru: 'DatePicker (выбор даты)' },
+  },
+  {
+    slug: 'time-picker',
+    labels: { 'zh-CN': 'TimePicker 时间选择器', 'en-US': 'TimePicker', 'zh-TW': 'TimePicker 時間選擇器', 'ja-JP': 'TimePicker 時間選択', 'ko-KR': 'TimePicker 시간 선택', es: 'TimePicker (selector de hora)', ar: 'TimePicker (منتقي الوقت)', 'fr-FR': 'TimePicker (sélecteur d\'heure)', ru: 'TimePicker (выбор времени)' },
+  },
+  {
+    slug: 'slider',
+    labels: { 'zh-CN': 'Slider 滑块', 'en-US': 'Slider', 'zh-TW': 'Slider 滑桿', 'ja-JP': 'Slider スライダー', 'ko-KR': 'Slider 슬라이더', es: 'Slider (control deslizante)', ar: 'Slider (شريط التمرير)', 'fr-FR': 'Slider (curseur)', ru: 'Slider (ползунок)' },
+  },
+  {
+    slug: 'tree',
+    labels: { 'zh-CN': 'Tree 树形控件', 'en-US': 'Tree', 'zh-TW': 'Tree 樹形控件', 'ja-JP': 'Tree ツリーコントロール', 'ko-KR': 'Tree 트리 컨트롤', es: 'Tree (vista de árbol)', ar: 'Tree (شجرة)', 'fr-FR': 'Tree (arborescence)', ru: 'Tree (дерево)' },
+  },
+  {
+    slug: 'tree-select',
+    labels: { 'zh-CN': 'TreeSelect 树形选择器', 'en-US': 'TreeSelect', 'zh-TW': 'TreeSelect 樹形選擇器', 'ja-JP': 'TreeSelect ツリーセレクター', 'ko-KR': 'TreeSelect 트리 셀렉터', es: 'TreeSelect (selector en árbol)', ar: 'TreeSelect (محدد الشجرة)', 'fr-FR': 'TreeSelect (sélecteur en arbre)', ru: 'TreeSelect (древовидный выбор)' },
+  },
+  {
+    slug: 'transfer',
+    labels: { 'zh-CN': 'Transfer 穿梭框', 'en-US': 'Transfer', 'zh-TW': 'Transfer 穿梭框', 'ja-JP': 'Transfer トランスファー', 'ko-KR': 'Transfer 트랜스퍼', es: 'Transfer (lista de transferencia)', ar: 'Transfer (قائمة النقل)', 'fr-FR': 'Transfer (liste de transfert)', ru: 'Transfer (список переноса)' },
+  },
+  {
+    slug: 'upload',
+    labels: { 'zh-CN': 'Upload 上传', 'en-US': 'Upload', 'zh-TW': 'Upload 上傳', 'ja-JP': 'Upload アップロード', 'ko-KR': 'Upload 업로드', es: 'Upload (subida de archivos)', ar: 'Upload (رفع الملفات)', 'fr-FR': 'Upload (envoi de fichiers)', ru: 'Upload (загрузка файлов)' },
+  },
 ]
 
 const serviceItems: { slug: string; labels: Labels }[] = [
@@ -318,6 +438,10 @@ const serviceItems: { slug: string; labels: Labels }[] = [
   {
     slug: 'loading',
     labels: { 'zh-CN': 'Loading 加载', 'en-US': 'Loading', 'zh-TW': 'Loading 載入', 'ja-JP': 'Loading ローディング', 'ko-KR': 'Loading 로딩', es: 'Cargando', ar: 'تحميل Loading', 'fr-FR': 'Chargement', ru: 'Загрузка' },
+  },
+  {
+    slug: 'notification',
+    labels: { 'zh-CN': 'Notification 通知', 'en-US': 'Notification', 'zh-TW': 'Notification 通知', 'ja-JP': 'Notification 通知', 'ko-KR': 'Notification 알림', es: 'Notification (notificación)', ar: 'Notification (إشعار)', 'fr-FR': 'Notification', ru: 'Notification (уведомление)' },
   },
 ]
 
@@ -387,8 +511,8 @@ export default defineConfig({
     hostname: hostname + base,
   },
   head: [
-    // 图标：SVG 主（浏览器现代版）+ ICO fallback（搜索引擎/老浏览器）+ apple-touch-icon
-    ['link', { rel: 'icon', type: 'image/svg+xml', href: `${base}logo.svg` }],
+    // 图标：PNG 主（品牌 logo，docs/部署/favicon-src/logo.png 分发）+ ICO fallback（搜索引擎/老浏览器）+ apple-touch-icon
+    ['link', { rel: 'icon', type: 'image/png', sizes: '512x512', href: `${base}logo.png` }],
     ['link', { rel: 'icon', sizes: '32x32', href: `${base}favicon.ico` }],
     ['link', { rel: 'apple-touch-icon', href: `${base}apple-touch-icon.png` }],
     // 社交分享图（docs/部署/favicon-src/og.png 同源栅格化）
@@ -434,6 +558,7 @@ export default defineConfig({
   ],
   themeConfig: {
     siteTitle: 'lh-ui-uniapp',
+    logo: { light: '/logo.png', dark: '/logo-dark.png', alt: 'lh-ui' },
   },
   locales: buildLocales(),
   vite: {

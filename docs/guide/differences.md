@@ -82,6 +82,44 @@ Vue3 版有 `lh-notification`，本库首版**不做**（小程序端价值低�
 用法不变，都是 `<lh-config-provider :theme="dark">`。本库的 `theme/index.css` 里
 暗色变量挂在 `page.dark, .dark` 上，所以暗色作用域跟着 ConfigProvider 的包裹节点走。
 
+## steps：连接线「末项不画」由 --line-last 类接管
+
+share 源里步骤条连接线（横向 `::after` / 纵向 `::before`）靠结构性 `:not(:last-child)`
+只画非末项；WXSS 不支持 `:not()`，`build-styles.mjs` 在净化时把该伪类**剥离**
+（连接线改为所有步骤项都画），末项 / 行末项的隐藏全部交给 `--line-last` 类：
+
+- 横向：折行度量逻辑与 Vue3 版同源（`getStepsLineLastIndices`，结果恒含全局末项），
+  度量改走适配层 `getLhRect`（H5 走 document 查询、MP 走异步 `createSelectorQuery`，
+  必须 onMounted 之后）。
+- 纵向：无折行，直接标记全局末项；share 无纵向 `--line-last::before` 隐藏规则，
+  由 `lh-steps` SFC 的 uni-app 适配样式补一条。
+- 容器宽度变化重算折行仅 H5（`ResizeObserver`）；MP 无此 API，步骤增删与方向切换照常重算。
+
+另外 plus 真源的 `themeVars` 组件级主题变量本库暂不支持
+（ConfigProvider 的 `componentTheme` 名单未含 steps）。API 与行为其余部分与 Vue3 版一致。
+
+## calendar：view 自绘网格，全端一致的日历
+
+日历是**纯 `view` 自绘的 7 列网格**（`grid-template-columns: repeat(7, 1fr)`），不使用
+任何原生日期 / picker 控件、不依赖 DOM 度量——H5 与微信小程序渲染和交互完全一致，
+移动端天然友好。网格算法（`generateCalendarDays` / 区间归一 / 多选切换 / 禁用判定）
+全部是 share 的 core 纯函数，本仓只写胶水。
+
+与 Vue3 版的差异：
+
+- **DOM 元素映射**：plus 的 `<div>` / `<button>` / `<input>` 全部换成 `<view>`；
+  input 模式的触发框由 `<view>` 自绘渲染占位与回显文案（MP 不支持 `::placeholder`，
+  走原生 `<input>` 还需额外配 `placeholder-style`）。
+- **禁用日外观**：view 无 `:disabled` 伪类（share scss 的 `&:disabled` 只匹配 button），
+  禁用单元格改由 `--disabled` 类名承载，SFC 内联按同一令牌补兜底样式
+  （同 lh-segmented 的先例）。
+- **键盘网格导航仅 H5**：方向键翻日、Home / End 行首行尾、PageUp / PageDown 翻月
+  以及 roving tabindex，MP 端无键盘事件，由条件编译守卫直接不调用（MP 包无死代码）。
+- **input 模式点击外部收起仅 H5**：plus 监听文档级 mousedown 收起面板；MP 无 document，
+  面板由触发框点击切换开合。
+- **aria 属性包摊开绑定**：plus 模板里 share 的属性包不能 `v-bind` 落图
+  （MP 模板编译器不支持），改由胶水层把 `aria-*` 键摊成具体值逐项显式绑定。
+
 ## 单位：px 直出
 
 本库**不做 px→rpx 转换**，样式源是 px 基准直出——与 wot-design-uni / uview-plus /

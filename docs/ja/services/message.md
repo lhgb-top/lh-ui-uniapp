@@ -81,5 +81,5 @@ message.config({ duration: 2000, max: 5, offset: 20 })
 - **`appendTo` はありません**：Web 版は `document.body` にマウントしますが、ミニプログラムにはこの概念がなく、マウント位置は
   `<lh-message />` がページ内にある位置で決まります。
 - 進退アニメーションは CSS transition + setTimeout で時間を合わせます（`transitionend` はミニプログラムでは信頼できません）。
-- 通知系コンポーネント（Notification）は初版では未実装のため、Message で代替してください。
+- 通知が必要な場合は Notification サービスを利用してください（「サービス」グループを参照）。
 :::

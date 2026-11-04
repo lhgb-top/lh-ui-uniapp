@@ -2,6 +2,9 @@
 layout: home
 
 hero:
+  image:
+    src: /logo-banner.png
+    alt: lh-ui 品牌横幅
   name: lh-ui uniapp
   text: uni-app 컴포넌트 라이브러리
   tagline: 하나의 코드로 H5 + WeChat 미니프로그램. 컴포넌트 로직과 스타일 소스는 Vue3 / Vue2 / React 버전과 같은 출처를 공유합니다

@@ -83,5 +83,5 @@ message.config({ duration: 2000, max: 5, offset: 20 })
   المصغر، فيحدّد موضع التركيب مكان `<lh-message />` داخل الصفحة.
 - تُحاذاة مدة حركتي الدخول والخروج عبر CSS transition + setTimeout (`transitionend` غير موثوق في
   البرنامج المصغر).
-- مكوّن الإشعارات (Notification) غائب في الإصدار الأول، استخدم Message بديلًا.
+- لاحتياجات الإشعارات استخدم خدمة Notification (انظر مجموعة «الخدمات»).
 :::

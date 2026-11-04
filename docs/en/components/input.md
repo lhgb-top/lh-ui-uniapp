@@ -38,6 +38,30 @@ The WXSS of the WeChat Mini Program does not support the `::placeholder` pseudo-
 </template>
 ```
 
+## Label position
+
+`label` is now actually rendered (previously the prop was declared but not wired up). The default `float` is a floating label — it floats up to the top-left notch when focused or filled; `labelPosition` switches to the static positions `top` / `bottom` / `left` / `right`:
+
+```vue
+<template>
+  <!-- Default: floating label (floats to the top-left notch on focus/when filled) -->
+  <lh-input v-model="text" label="Username" />
+  <!-- Top -->
+  <lh-input v-model="text" label="Username" label-position="top" />
+  <!-- Bottom -->
+  <lh-input v-model="text" label="Username" label-position="bottom" />
+  <!-- Left with fixed width (labelWidth only takes effect on left / right) -->
+  <lh-input v-model="text" label="Username" label-position="left" :label-width="80" />
+  <!-- Right -->
+  <lh-input v-model="text" label="Username" label-position="right" />
+</template>
+```
+
+::: warning uni-app differences
+- The per-size vertical fine-tuning of `float` relies on the `:has` selector (not supported by WXSS); on the Mini Program only the `medium` size is exact, and on other sizes the label's vertical position is slightly off. The static positions (`top` / `left` / `right` / `bottom`) work on all platforms.
+- The floated position of `textarea` + `float` is already shimmed with inline styles and works on all platforms.
+:::
+
 ## Props
 
 | Prop | Description | Type | Default |
@@ -61,7 +85,9 @@ The WXSS of the WeChat Mini Program does not support the `::placeholder` pseudo-
 | password | Password mode | `boolean` | `false` |
 | rows | textarea rows | `number` | — |
 | autosize | textarea auto-height (the auto-height of the MP textarea) | `boolean` | `false` |
-| label | Label text | `string` | — |
+| label | Floating label (default); use labelPosition to switch its position | `string` | — |
+| labelPosition | Label position | `'float' \| 'top' \| 'left' \| 'right' \| 'bottom'` | `'float'` |
+| labelWidth | Fixed label width (only effective on left / right; numbers are px, strings are used as-is) | `string \| number` | — |
 | customClass | Custom class name | `string` | — |
 | themeVars | Component-level theme variables | `Record<string, string>` | — |
 | sx | Quick layout props | `LhSxProps` | — |

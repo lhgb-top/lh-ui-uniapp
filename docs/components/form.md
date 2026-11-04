@@ -43,11 +43,16 @@ const onSubmit = async () => {
 | --- | --- | --- | --- |
 | model | 表单数据对象（必填） | `Record<string, unknown>` | — |
 | rules | 校验规则（键为 prop 名） | `Record<string, LhFormRule[]>` | — |
-| labelPosition | 标签位置 | `'left' \| 'right' \| 'top'` | `'right'` |
+| labelPosition | 标签位置：`left` / `right` = 控件左侧标签的文字对齐（Element Plus 口径）；`top` = 上方；`bottom` = 控件下方 | `'left' \| 'right' \| 'top' \| 'bottom'` | `'right'` |
 | labelWidth | 标签宽度 | `string \| number` | — |
 | inline | 行内布局 | `boolean` | `false` |
 | customClass | 自定义类名 | `string` | — |
 | sx | 快速布局属性 | `LhSxProps` | — |
+
+::: tip
+`labelPosition` 的位置类名已与 share 样式源对齐：`lh-form-item--top` / `lh-form-item--bottom` /
+`lh-form-item--left` / `lh-form-item--right`，可在页面样式中按类名微调。
+:::
 
 ## Form Methods（通过 ref 调用）
 

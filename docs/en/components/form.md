@@ -43,11 +43,15 @@ const onSubmit = async () => {
 | --- | --- | --- | --- |
 | model | Form data object (required) | `Record<string, unknown>` | — |
 | rules | Validation rules (keys are prop names) | `Record<string, LhFormRule[]>` | — |
-| labelPosition | Label position | `'left' \| 'right' \| 'top'` | `'right'` |
+| labelPosition | Label position: `left` / `right` = text alignment of the label on the left of the control (Element Plus semantics); `top` = above; `bottom` = below the control | `'left' \| 'right' \| 'top' \| 'bottom'` | `'right'` |
 | labelWidth | Label width | `string \| number` | — |
 | inline | Inline layout | `boolean` | `false` |
 | customClass | Custom class name | `string` | — |
 | sx | Quick layout props | `LhSxProps` | — |
+
+::: tip
+The position class names of `labelPosition` are aligned with the share style source: `lh-form-item--top` / `lh-form-item--bottom` / `lh-form-item--left` / `lh-form-item--right`; you can fine-tune them in page styles by class name.
+:::
 
 ## Form Methods (called via ref)
 

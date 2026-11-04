@@ -83,5 +83,5 @@ message.config({ duration: 2000, max: 5, offset: 20 })
   페이지 내 `<lh-message />`의 위치에 의해 결정됩니다.
 - 등장 / 퇴장 애니메이션은 CSS transition + setTimeout으로 시간을 정렬합니다(미니프로그램에서 `transitionend`는
   신뢰할 수 없음).
-- 알림류 컴포넌트(Notification)는 초판에 없으며, Message로 대체합니다.
+- 알림이 필요하면 Notification 서비스를 사용하세요(「서비스」 그룹 참고).
 :::

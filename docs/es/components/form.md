@@ -43,11 +43,15 @@ const onSubmit = async () => {
 | --- | --- | --- | --- |
 | model | Objeto de datos del formulario (obligatorio) | `Record<string, unknown>` | — |
 | rules | Reglas de validación (las claves son los nombres de las props) | `Record<string, LhFormRule[]>` | — |
-| labelPosition | Posición de la etiqueta | `'left' \| 'right' \| 'top'` | `'right'` |
+| labelPosition | Posición de la etiqueta: `left` / `right` = alineación del texto de la etiqueta a la izquierda del control (criterio de Element Plus); `top` = arriba; `bottom` = debajo del control | `'left' \| 'right' \| 'top' \| 'bottom'` | `'right'` |
 | labelWidth | Ancho de la etiqueta | `string \| number` | — |
 | inline | Disposición en línea | `boolean` | `false` |
 | customClass | Clase personalizada | `string` | — |
 | sx | Props rápidas de disposición | `LhSxProps` | — |
+
+::: tip
+Los nombres de clase de posición de `labelPosition` están alineados con la fuente de estilos de share: `lh-form-item--top` / `lh-form-item--bottom` / `lh-form-item--left` / `lh-form-item--right`; puedes ajustarlos finamente en los estilos de la página por nombre de clase.
+:::
 
 ## Form Methods (se llaman mediante ref)
 

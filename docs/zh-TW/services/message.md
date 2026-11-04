@@ -81,5 +81,5 @@ message.config({ duration: 2000, max: 5, offset: 20 })
 - **沒有 `appendTo`**：web 端往 `document.body` 掛，小程序沒這個概念，掛載點位置由
   `<lh-message />` 在頁面裡的位置決定。
 - 進出動畫用 CSS transition + setTimeout 對齊時長（`transitionend` 在小程序不可靠）。
-- 通知類元件（Notification）首版缺席，用 Message 替代。
+- 通知類需求請用 Notification 通知服務（見「服務」分組）。
 :::
