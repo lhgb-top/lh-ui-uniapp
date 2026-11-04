@@ -6,6 +6,9 @@ import LhMessage from '@/components/lh-message/lh-message.vue'
 import { useLhLoading } from '@/loading'
 import { lhLoadingInstances, closeAllLhLoading } from '@/loading/store'
 import LhLoading from '@/components/lh-loading/lh-loading.vue'
+import { useLhNotification } from '@/notification'
+import { lhNotificationRecords, closeAllLhNotifications } from '@/notification/store'
+import LhNotification from '@/components/lh-notification/lh-notification.vue'
 
 /**
  * 命令式服务的「挂载点未放置」告警路径（R7 对策）与挂载点卸载清理。
@@ -15,6 +18,7 @@ import LhLoading from '@/components/lh-loading/lh-loading.vue'
 afterEach(() => {
   closeAllLhMessages()
   closeAllLhLoading()
+  closeAllLhNotifications()
 })
 describe('挂载点未放置时的告警', () => {
   it('useLhMessage 告警且仍入队（不静默降级）', () => {
@@ -37,6 +41,15 @@ describe('挂载点未放置时的告警', () => {
     expect(lhLoadingInstances).toHaveLength(1)
     error.mockRestore()
   })
+
+  it('useLhNotification 告警且仍入队', () => {
+    const error = vi.spyOn(console, 'error').mockImplementation(() => {})
+    useLhNotification().info({ title: '你好' })
+    expect(error).toHaveBeenCalled()
+    expect(String(error.mock.calls[0][0])).toContain('<lh-notification />')
+    expect(lhNotificationRecords).toHaveLength(1)
+    error.mockRestore()
+  })
 })
 
 describe('放置挂载点后', () => {
@@ -55,6 +68,15 @@ describe('放置挂载点后', () => {
     useLhLoading().show('加载中')
     expect(error).not.toHaveBeenCalled()
     expect(lhLoadingInstances).toHaveLength(1)
+    error.mockRestore()
+  })
+
+  it('useLhNotification 不再告警', () => {
+    const error = vi.spyOn(console, 'error').mockImplementation(() => {})
+    mount(LhNotification)
+    useLhNotification().success({ title: '你好' })
+    expect(error).not.toHaveBeenCalled()
+    expect(lhNotificationRecords).toHaveLength(1)
     error.mockRestore()
   })
 })
@@ -76,5 +98,14 @@ describe('挂载点卸载时的清理', () => {
 
     wrapper.unmount()
     expect(lhLoadingInstances).toHaveLength(0)
+  })
+
+  it('摘除残留通知记录（含自动关闭定时器）', () => {
+    const wrapper = mount(LhNotification)
+    useLhNotification().info({ title: '你好' })
+    expect(lhNotificationRecords).toHaveLength(1)
+
+    wrapper.unmount()
+    expect(lhNotificationRecords).toHaveLength(0)
   })
 })

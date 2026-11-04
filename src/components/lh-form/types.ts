@@ -2,7 +2,7 @@ import type { InjectionKey } from 'vue'
 import type { LhFormRule } from '@lh-ui/share/core/form'
 import type { LhSxProps } from '@lh-ui/share/core/shared'
 
-export type LhFormLabelPosition = 'left' | 'right' | 'top'
+export type LhFormLabelPosition = 'left' | 'right' | 'top' | 'bottom'
 
 /**
  * Form 组件 Props（与 plus 仓同构）

@@ -13,6 +13,12 @@
       }
     },
     {
+      "path": "pages/layout/layout",
+      "style": {
+        "navigationBarTitleText": "Layout 布局容器"
+      }
+    },
+    {
       "path": "pages/button/button",
       "style": {
         "navigationBarTitleText": "Button 按钮"
@@ -40,6 +46,12 @@
       "path": "pages/switch/switch",
       "style": {
         "navigationBarTitleText": "Switch 开关"
+      }
+    },
+    {
+      "path": "pages/input-number/input-number",
+      "style": {
+        "navigationBarTitleText": "InputNumber 计数器"
       }
     },
     {
@@ -103,9 +115,21 @@
       }
     },
     {
+      "path": "pages/breadcrumb/breadcrumb",
+      "style": {
+        "navigationBarTitleText": "Breadcrumb 面包屑"
+      }
+    },
+    {
       "path": "pages/skeleton/skeleton",
       "style": {
         "navigationBarTitleText": "Skeleton 骨架屏"
+      }
+    },
+    {
+      "path": "pages/alert/alert",
+      "style": {
+        "navigationBarTitleText": "Alert 警告"
       }
     },
     {
@@ -130,6 +154,168 @@
       "path": "pages/progress/progress",
       "style": {
         "navigationBarTitleText": "Progress 进度条"
+      }
+    },
+    {
+      "path": "pages/statistic/statistic",
+      "style": {
+        "navigationBarTitleText": "Statistic 统计数值"
+      }
+    },
+    {
+      "path": "pages/descriptions/descriptions",
+      "style": {
+        "navigationBarTitleText": "Descriptions 描述列表"
+      }
+    },
+    {
+      "path": "pages/spinner/spinner",
+      "style": {
+        "navigationBarTitleText": "Spinner 加载圈"
+      }
+    },
+    {
+      "path": "pages/tabs/tabs",
+      "style": {
+        "navigationBarTitleText": "Tabs 标签页"
+      }
+    },
+    {
+      "path": "pages/segmented/segmented",
+      "style": {
+        "navigationBarTitleText": "Segmented 分段器"
+      }
+    },
+    {
+      "path": "pages/grid/grid",
+      "style": {
+        "navigationBarTitleText": "Grid 栅格"
+      }
+    },
+    {
+      "path": "pages/collapse/collapse",
+      "style": {
+        "navigationBarTitleText": "Collapse 折叠面板"
+      }
+    },
+    {
+      "path": "pages/timeline/timeline",
+      "style": {
+        "navigationBarTitleText": "Timeline 时间线"
+      }
+    },
+    {
+      "path": "pages/steps/steps",
+      "style": {
+        "navigationBarTitleText": "Steps 步骤条"
+      }
+    },
+    {
+      "path": "pages/rate/rate",
+      "style": {
+        "navigationBarTitleText": "Rate 评分"
+      }
+    },
+    {
+      "path": "pages/pagination/pagination",
+      "style": {
+        "navigationBarTitleText": "Pagination 分页"
+      }
+    },
+    {
+      "path": "pages/image/image",
+      "style": {
+        "navigationBarTitleText": "Image 图片"
+      }
+    },
+    {
+      "path": "pages/dropdown/dropdown",
+      "style": {
+        "navigationBarTitleText": "Dropdown 下拉菜单"
+      }
+    },
+    {
+      "path": "pages/drawer/drawer",
+      "style": {
+        "navigationBarTitleText": "Drawer 抽屉"
+      }
+    },
+    {
+      "path": "pages/popover/popover",
+      "style": {
+        "navigationBarTitleText": "Popover 弹出框"
+      }
+    },
+    {
+      "path": "pages/notification/notification",
+      "style": {
+        "navigationBarTitleText": "Notification 通知"
+      }
+    },
+    {
+      "path": "pages/popconfirm/popconfirm",
+      "style": {
+        "navigationBarTitleText": "Popconfirm 气泡确认"
+      }
+    },
+    {
+      "path": "pages/calendar/calendar",
+      "style": {
+        "navigationBarTitleText": "Calendar 日历"
+      }
+    },
+    {
+      "path": "pages/menu/menu",
+      "style": {
+        "navigationBarTitleText": "Menu 导航菜单"
+      }
+        },
+    {
+      "path": "pages/cascader/cascader",
+      "style": {
+        "navigationBarTitleText": "Cascader 级联选择器"
+      }
+    },
+    {
+      "path": "pages/time-picker/time-picker",
+      "style": {
+        "navigationBarTitleText": "TimePicker 时间选择器"
+      }
+    },
+    {
+      "path": "pages/slider/slider",
+      "style": {
+        "navigationBarTitleText": "Slider 滑块"
+      }
+    },
+    {
+      "path": "pages/date-picker/date-picker",
+      "style": {
+        "navigationBarTitleText": "DatePicker 日期选择器"
+      }
+    },
+    {
+      "path": "pages/tree/tree",
+      "style": {
+        "navigationBarTitleText": "Tree 树形控件"
+      }
+    },
+    {
+      "path": "pages/tree-select/tree-select",
+      "style": {
+        "navigationBarTitleText": "TreeSelect 树形选择器"
+      }
+    },
+    {
+      "path": "pages/transfer/transfer",
+      "style": {
+        "navigationBarTitleText": "Transfer 穿梭框"
+      }
+    },
+    {
+      "path": "pages/upload/upload",
+      "style": {
+        "navigationBarTitleText": "Upload 上传"
       }
     }
   ],

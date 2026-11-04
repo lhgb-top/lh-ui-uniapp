@@ -1,66 +1,87 @@
 <template>
   <view
-    class="lh-input"
-    :class="inputClass"
+    class="lh-input__wrapper"
+    :class="[
+      ...wrapperModifiers,
+      props.disabled ? 'lh-input__wrapper--disabled' : '',
+      isFocused ? 'lh-input__wrapper--focused' : '',
+    ]"
     :style="inputStyle"
   >
-    <lh-icon
-      v-if="props.prefixIcon"
-      :name="props.prefixIcon"
-      class="lh-input__prefix-icon"
-    />
-
-    <textarea
-      v-if="isTextarea"
-      class="lh-input__inner"
-      :value="inputValue"
-      :placeholder="props.placeholder"
-      :placeholder-style="placeholderStyle"
-      :placeholder-class="props.placeholderClass"
-      :maxlength="props.maxlength"
-      :disabled="props.disabled"
-      :readonly="props.readonly"
-      :auto-height="props.autosize"
-      :name="props.name"
-      @input="handleInput"
-      @blur="handleBlur"
-      @focus="handleFocus"
-    />
-
-    <input
-      v-else
-      class="lh-input__inner"
-      :value="inputValue"
-      :type="innerType"
-      :password="props.password || props.type === 'password'"
-      :placeholder="props.placeholder"
-      :placeholder-style="placeholderStyle"
-      :placeholder-class="props.placeholderClass"
-      :maxlength="props.maxlength"
-      :disabled="props.disabled"
-      :readonly="props.readonly"
-      :name="props.name"
-      @input="handleInput"
-      @blur="handleBlur"
-      @focus="handleFocus"
-    />
-
+    <!-- Label（类名与浮动判定由 core 纯函数产出；用 view 承载——uni 的 label
+         是表单关联组件，语义不同且 text 无法可靠承载静态位置的块级布局） -->
     <view
-      v-if="props.clearable && inputValue && !props.disabled && !props.readonly"
-      class="lh-input__clear"
-      @click="handleClear"
+      v-if="props.label"
+      class="lh-input__label"
+      :class="labelClasses"
+      :style="labelStyle"
     >
-      <lh-icon
-        name="close"
-        :size="14"
-      />
+      {{ props.label }}
     </view>
 
-    <lh-icon
-      v-if="props.suffixIcon"
-      :name="props.suffixIcon"
-      class="lh-input__suffix-icon"
-    />
+    <view
+      class="lh-input"
+      :class="inputClass"
+    >
+      <lh-icon
+        v-if="props.prefixIcon"
+        :name="props.prefixIcon"
+        class="lh-input__prefix-icon"
+      />
+
+      <textarea
+        v-if="isTextarea"
+        class="lh-input__inner"
+        :style="textareaFloatStyle"
+        :value="inputValue"
+        :placeholder="props.label ? '' : props.placeholder"
+        :placeholder-style="placeholderStyle"
+        :placeholder-class="props.placeholderClass"
+        :maxlength="props.maxlength"
+        :disabled="props.disabled"
+        :readonly="props.readonly"
+        :auto-height="props.autosize"
+        :name="props.name"
+        @input="handleInput"
+        @blur="handleBlur"
+        @focus="handleFocus"
+      />
+
+      <input
+        v-else
+        class="lh-input__inner"
+        :value="inputValue"
+        :type="innerType"
+        :password="props.password || props.type === 'password'"
+        :placeholder="props.label ? '' : props.placeholder"
+        :placeholder-style="placeholderStyle"
+        :placeholder-class="props.placeholderClass"
+        :maxlength="props.maxlength"
+        :disabled="props.disabled"
+        :readonly="props.readonly"
+        :name="props.name"
+        @input="handleInput"
+        @blur="handleBlur"
+        @focus="handleFocus"
+      />
+
+      <view
+        v-if="props.clearable && inputValue && !props.disabled && !props.readonly"
+        class="lh-input__clear"
+        @click="handleClear"
+      >
+        <lh-icon
+          name="close"
+          :size="14"
+        />
+      </view>
+
+      <lh-icon
+        v-if="props.suffixIcon"
+        :name="props.suffixIcon"
+        class="lh-input__suffix-icon"
+      />
+    </view>
 
     <text
       v-if="showWordLimit && props.maxlength"
@@ -106,6 +127,8 @@ const props = withDefaults(defineProps<LhInputProps>(), {
   password: false,
   autosize: false,
   label: undefined,
+  labelPosition: 'float',
+  labelWidth: undefined,
   customClass: undefined,
   themeVars: undefined,
   bgPattern: undefined,
@@ -128,6 +151,11 @@ const {
   inputClass,
   inputStyle,
   placeholderStyle,
+  isFocused,
+  labelClasses,
+  wrapperModifiers,
+  labelStyle,
+  textareaFloatStyle,
   handleInput,
   handleBlur,
   handleFocus,

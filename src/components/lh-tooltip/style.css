@@ -68,11 +68,11 @@ page {
   position: fixed;
   z-index: 2000;
   padding: 6px 12px;
-  font-size: 12px;
+  font-size: var(--lh-font-size-extra-small, 12px);
   line-height: 1.5;
   border-radius: 2px;
   word-break: break-word;
-  box-shadow: 0 2px 12px 0 rgba(26, 26, 26, 0.08);
+  box-shadow: var(--lh-box-shadow-base, 0 2px 12px 0 rgba(26, 26, 26, 0.08));
   max-width: 200px;
   background-image: var(--lh-bg-pattern, none);
   background-blend-mode: var(--lh-bg-pattern-blend, normal);

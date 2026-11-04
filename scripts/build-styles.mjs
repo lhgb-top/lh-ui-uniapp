@@ -17,10 +17,17 @@
  *        [dir='rtl'] 方向覆盖块与仅其引用的 `*-rtl` keyframes 同样只进 H5
  *        （WXSS 无属性选择器，MP 端亦无 dir 语义）
  *      - 逻辑属性双发：WXSS 不识别 margin/padding/border/inset 的 inline/start/end
- *        系列与 text-align: start|end。物理兜底声明插在逻辑声明之前（MP/H5 均可见），
+ *        系列与 block-start/block-end（border-block-*）与 text-align: start|end。
+ *        物理兜底声明插在逻辑声明之前（MP/H5 均可见），
  *        原逻辑声明用 #ifdef H5 夹住（H5 下覆盖兜底，RTL 自动镜像；MP 固定 LTR）
  *      - `svg {}` 后代选择器 → `.lh-iconfont`（iconfont 方案，§五）
  *      - `img {}` 后代选择器 → `.lh-img`（uni 端走 `<image>`，SFC 需写 class="lh-img"）
+ *      - 其余裸标签选择器（WXSS 仅支持 page）：整规则用 #ifdef H5 夹住
+ *        （plus 为文档宿主压覆盖写的 nav/ol/li、svg 图形的 circle 等；
+ *        H5 分支才渲染标签节点，MP 端随条件编译剔除，不塞死代码）
+ *      - `:not(同族修饰类)` 剥离（WXSS 不支持 :not()）：参数为同基类修饰类时剥到基类
+ *        （如 timeline 的 `.lh-timeline__item:not(.lh-timeline__item--last)`），
+ *        遮蔽语义由同块内更靠后的修饰类规则接管；其余 :not() 形态不处理、不静默吞掉
  *      - 通配符：`PREFIX > * + *` → 父规则 flex + gap；`PREFIX > *` → 丢弃并告警
  *        （WXSS 无通配等价物，后者由使用者在子节点上自行写样式）
  *   3. 输出 components/<name>/style.css（自足 CSS，禁止手改）
@@ -29,6 +36,14 @@
  * 含 `page { --lh-* }` 明色 + `page.dark, .dark { … }` 暗色。
  *
  * 组件清单按 components/ 扫描（与 plus 同款「只有本库真实存在的组件才出产物」）。
+ *
+ * 命令式服务宿主样式（2026-11-04 三仓同步）：wxapp 的挂载点组件在
+ * src/{message,loading}/，不在组件扫描范围；本段按目录存在性守卫映射
+ * share styles/{message,loading}，uniapp 侧自动 no-op（宿主即组件本体）。
+ *
+ * 【同步登记 2026-11-04】wxapp 同源脚本头注释里的「使用方 app.wxss @import 主题」
+ * 指引修正为相对 miniprogram_npm 的路径（WXSS @import 不解析 npm 包名）；该文案为
+ * wxapp 端专属，本仓无对应段，仅登记不改。
  */
 import fs from 'node:fs'
 import path from 'node:path'
@@ -99,6 +114,44 @@ function isPrefersMedia(params) {
   return /\(\s*prefers-/.test(params)
 }
 
+/**
+ * 裸标签选择器判断（除 page 外）：WXSS 只支持 page 一个标签选择器。
+ *
+ * 与 verify-wxss.mjs 的 TAG_SELECTOR 同构。plus 仓为压制文档宿主样式泄漏
+ * （`.vp-doc` 的 nav / ol / li）以及描述 svg 图形（spinner 的 circle）写了
+ * 若干裸标签规则，在 uni-app 模板（一律 view / text / svg 内联节点）里本就
+ * 匹配不到：svg / img 已由上方规则改写成类名，page 由 `:root` 映射而来，
+ * 剩余裸标签（nav / ol / li / circle …）整规则只进 H5——既保住 verify-wxss
+ * 门禁，又不往 MP 产物塞死代码。H5 端不受影响（标签节点在 H5 分支渲染）。
+ */
+const TAG_SELECTOR_RE = /(?:^|[\s,+~>])([a-zA-Z][\w-]*)(?=[\s.+~,#>{]|$)/g
+const ALLOWED_TAGS = new Set(['page'])
+
+function hasBareTagSelector(selector) {
+  TAG_SELECTOR_RE.lastIndex = 0
+  let match
+  while ((match = TAG_SELECTOR_RE.exec(selector))) {
+    if (!ALLOWED_TAGS.has(match[1])) return true
+  }
+  return false
+}
+
+/**
+ * 节点是否位于 @keyframes 内部。
+ *
+ * @keyframes 的关键帧块（to / from / 0%）在 postcss 里也是 Rule 节点，
+ * 选择器形如 `to` / `from`，会被 hasBareTagSelector 误判为裸标签——
+ * 它们不是选择器，必须跳过（与 verify-wxss 的「非选择器行跳过」同构）。
+ */
+function isInsideKeyframes(node) {
+  let parent = node.parent
+  while (parent) {
+    if (parent.type === 'atrule' && parent.name === 'keyframes') return true
+    parent = parent.parent
+  }
+  return false
+}
+
 // ============================== 逻辑属性降级（RTL 支持） ==============================
 
 /**
@@ -141,6 +194,22 @@ const INLINE_SHORTHANDS = {
   'margin-inline': ['margin-left', 'margin-right'],
   'padding-inline': ['padding-left', 'padding-right'],
   'inset-inline': ['left', 'right'],
+}
+
+/** block 轴简写：一份值拆成上下两条物理声明（MP 固定 LTR） */
+const BLOCK_SHORTHANDS = {
+  'margin-block': ['margin-top', 'margin-bottom'],
+  'padding-block': ['padding-top', 'padding-bottom'],
+}
+
+/** block 轴（垂直）逻辑属性：WXSS 不识别，LTR 下映射到固定物理边（top / bottom） */
+const BLOCK_LOGICAL_PROPS = {
+  'margin-block-start': 'margin-top',
+  'margin-block-end': 'margin-bottom',
+  'padding-block-start': 'padding-top',
+  'padding-block-end': 'padding-bottom',
+  'border-block-start': 'border-top',
+  'border-block-end': 'border-bottom',
 }
 
 /** 角圆角逻辑属性（block 轴 + inline 轴组合），LTR 下映射到固定物理角 */
@@ -198,8 +267,20 @@ function rewriteLogicalDeclarations(ruleNode) {
       continue
     }
 
+    if (BLOCK_SHORTHANDS[prop]) {
+      dualEmit(node, BLOCK_SHORTHANDS[prop].map((p) => physicalDecl(p, value, important)))
+      continue
+    }
+
     if (INLINE_LOGICAL_PROPS[prop]) {
       dualEmit(node, [physicalDecl(INLINE_LOGICAL_PROPS[prop], value, important)])
+      continue
+    }
+
+    // block 轴（垂直）逻辑属性：物理兜底在前（MP / H5 均可见），逻辑覆盖仅 H5；
+    // 与 inline 轴同款双发，WXSS 端固定按 top / bottom 渲染
+    if (BLOCK_LOGICAL_PROPS[prop]) {
+      dualEmit(node, [physicalDecl(BLOCK_LOGICAL_PROPS[prop], value, important)])
       continue
     }
 
@@ -248,9 +329,18 @@ function mapUniversalSelector(ruleNode) {
   const prefix = match[1].trim()
 
   const decls = ruleNode.nodes?.filter((n) => n.type === 'decl') ?? []
-  if (decls.length !== 1 || decls[0].prop !== 'margin-left') {
+  if (decls.length !== 1) {
     throw new Error(
-      `[build-styles] 未支持的通配规则：${ruleNode.selector}（仅支持单条 margin-left 的 > * + *）`,
+      `[build-styles] 未支持的通配规则：${ruleNode.selector}（仅支持单条 margin 声明的 > * + *）`,
+    )
+  }
+  // 兄弟间距声明：margin-left（物理）或 margin-inline-start/end（逻辑，RTL 提交引入）。
+  // 映射目标是父节点的 flex gap——间距值与方向无关；MP 端固定按 LTR 渲染，
+  // inline-start 即 left，直接取值注入 gap，无需方向判断
+  const GAP_PROP_ALIASES = new Set(['margin-left', 'margin-inline-start', 'margin-inline-end'])
+  if (!GAP_PROP_ALIASES.has(decls[0].prop)) {
+    throw new Error(
+      `[build-styles] 未支持的通配规则：${ruleNode.selector}（仅支持单条 margin-left / margin-inline-* 的 > * + *）`,
     )
   }
   const gapValue = decls[0].value
@@ -363,6 +453,51 @@ const purifyPlugin = () => ({
       return
     }
 
+    // ⑧ 剩余裸标签选择器（svg / img 已改写、page 已放行）整规则只进 H5：
+    //    WXSS 仅支持 page 标签选择器（见上方 hasBareTagSelector 注释）。
+    //    @keyframes 内部的 to / from 不是选择器，跳过。
+    if (!isInsideKeyframes(ruleNode) && hasBareTagSelector(ruleNode.selector)) {
+      wrapH5ConditionalNode(ruleNode)
+      return
+    }
+
+    // ⑨ `:not(同族修饰类)` 剥离（WXSS 不支持 :not()，verify-wxss 硬卡）
+    //    仅处理「:not() 的参数本身是同基类的修饰类」这一种形态：
+    //      `.lh-timeline__item:not(.lh-timeline__item--last)` → `.lh-timeline__item`
+    //    安全性：剥离后该规则特异度下降，但同块内的修饰类规则（--last）在其之后声明、
+    //    特异度不低于剥后规则，遮蔽语义由后者接管（timeline 的末项连线隐藏本就靠
+    //    `.lh-timeline__item--last::before { display: none }`）。
+    //    注意：含 :hover / :focus / [dir= 的规则已在上方整块进 H5，不会走到这里；
+    //    参数为结构性伪类（如 steps 的 `:not(:last-child)`）或禁用态（`:not(:disabled)`）
+    //    的形态**不处理**——禁止静默吞掉，由对应组件按需显式登记映射。
+    const notStripped = ruleNode.selector.replace(
+      /(\.[A-Za-z_][\w-]*):not\((\.[A-Za-z_][\w-]*)\)/g,
+      (match, base, modifier) => (modifier.startsWith(`${base}--`) ? base : match),
+    )
+    if (notStripped !== ruleNode.selector) {
+      console.warn(
+        `[build-styles] :not() 同族修饰类剥离：${ruleNode.selector.trim()} -> ${notStripped.trim()}`,
+      )
+      ruleNode.selector = notStripped
+    }
+
+    // ⑩ steps 的结构性 `:not(:last-child)` 剥离（与 ⑨ 同为 WXSS 不支持 :not() 的显式登记）
+    //    `.lh-steps__item:not(:last-child)::after` → `.lh-steps__item::after`
+    //    即连接线改为「所有步骤项都画」，末项 / 行末项的隐藏全部交给 `--line-last` 类：
+    //    - 横向：share 本就有 `.lh-steps__item--line-last::after { display: none }`
+    //      （剥离后特异度不变、语义等价），行末项索引由组件胶水层度量折行产出
+    //      （getStepsLineLastIndices 的结果恒含全局末项）
+    //    - 纵向：share 无 --line-last 的 ::before 隐藏规则，由 lh-steps SFC 的
+    //      uni-app 适配样式补一条（`.lh-steps--vertical .lh-steps__item--line-last::before`）
+    //    安全性：剥离不影响声明，只放宽选择器；遮蔽语义由名中带 --line-last 的规则接管。
+    const lastChildStripped = ruleNode.selector.replace(/:not\(:last-child\)/g, '')
+    if (lastChildStripped !== ruleNode.selector) {
+      console.warn(
+        `[build-styles] :not(:last-child) 结构性剥离：${ruleNode.selector.trim()} -> ${lastChildStripped.trim()}`,
+      )
+      ruleNode.selector = lastChildStripped
+    }
+
     // ⑦ 逻辑属性双发（WXSS 不识别 inline/start/end：物理兜底 + #ifdef H5 逻辑覆盖）
     rewriteLogicalDeclarations(ruleNode)
   },
@@ -387,6 +522,16 @@ async function purify(css) {
 }
 
 // ============================== 主流程 ==============================
+
+/**
+ * 组件目录名 → share scss 目录名别名（不一致时在此登记）
+ *
+ * `row`：plus 真源把 grid 拆成 row / col 两个组件，share 的样式源仍是
+ * `styles/grid/index.scss`（lh-row 与 lh-col 规则在同一份 scss 里）。
+ * lh-row 出净化产物，lh-col 照父子组件先例复用 `../lh-row/style.css`，
+ * 所以只需给 row 一个别名；col 无产物（share 无 col/ 目录，自然跳过）。
+ */
+const SCSS_NAME_ALIASES = { row: 'grid' }
 
 function getComponentNames() {
   const dir = resolvePath('src/components')
@@ -419,14 +564,34 @@ async function main() {
   const names = getComponentNames()
   let built = 0
   for (const name of names) {
-    const input = path.join(shareStyles, `${name}/index.scss`)
+    // 组件目录名与 share scss 目录名不一致时走别名（如 lh-row -> grid）
+    const scssName = SCSS_NAME_ALIASES[name] ?? name
+    const input = path.join(shareStyles, `${scssName}/index.scss`)
     if (!fs.existsSync(input)) continue
     const css = await purify(await compileScss(input))
     writeFile(resolvePath(`src/components/lh-${name}/style.css`), `${AUTOGEN_HEADER}${css}`)
     built += 1
   }
 
-  console.log(`styles built: theme + ${built} components -> src/theme/, components/*/style.css`)
+  // 3. 命令式服务宿主样式（2026-11-04 三仓同步）：挂载点组件若在 src/{message,loading}/
+  //    （wxapp 形态，非组件扫描范围），单独映射 share styles/{message,loading} 落
+  //    lh-*-host.wxss。uniapp 的宿主是 src/components/lh-message 组件本体（走上方
+  //    组件扫描），本段目录存在性守卫下自动 no-op，仅为三仓同源保留。
+  const HOST_SCSS = [
+    { dir: 'src/message', name: 'lh-message-host', scss: 'message' },
+    { dir: 'src/loading', name: 'lh-loading-host', scss: 'loading' },
+  ]
+  let hosts = 0
+  for (const { dir, name, scss } of HOST_SCSS) {
+    if (!fs.existsSync(resolvePath(dir))) continue
+    const input = path.join(shareStyles, `${scss}/index.scss`)
+    if (!fs.existsSync(input)) continue
+    const css = await purify(await compileScss(input))
+    writeFile(resolvePath(`${dir}/${name}.wxss`), `${AUTOGEN_HEADER}${css}`)
+    hosts += 1
+  }
+
+  console.log(`styles built: theme + ${built} components + ${hosts} hosts -> src/theme/, components/*/style.css`)
 }
 
 main().catch((error) => {

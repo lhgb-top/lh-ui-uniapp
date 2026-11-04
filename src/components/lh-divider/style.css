@@ -144,7 +144,7 @@ page {
 }
 .lh-divider__label {
   padding: 0 12px;
-  font-size: 14px;
+  font-size: var(--lh-font-size-base, 14px);
   font-weight: 500;
   color: var(--lh-text-primary, #2C2C2C);
   white-space: nowrap;

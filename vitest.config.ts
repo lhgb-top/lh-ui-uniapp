@@ -29,7 +29,11 @@ function stripConditional(code: string): string {
     if (match) {
       const [, kind, rest] = match
       if (kind === 'ifdef' || kind === 'ifndef') {
+        // 剥注释尾（<!-- #ifdef H5 --> 的 -->、/* #ifdef H5 */ 的 */），
+        // 否则平台名变成 'H5 -->' 永不命中，ifdef 分支会被反转删除
         const platforms = rest
+          .replace(/-->\s*$/, '')
+          .replace(/\*\/\s*$/, '')
           .trim()
           .split(/\s*\|\|\s*/)
           .filter(Boolean)

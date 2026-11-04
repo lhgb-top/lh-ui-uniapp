@@ -109,6 +109,9 @@ page {
 }
 .lh-button__icon + .lh-button__text, .lh-button__loading + .lh-button__text {
   margin-left: 4px;
+  /* #ifdef H5 */
+  margin-inline-start: 4px;
+  /* #endif */
 }
 .lh-button--medium {
   height: 32px;

@@ -2,7 +2,9 @@
   <view
     class="lh-form-item"
     :class="[
-      `lh-form-item--label-${labelPosition}`,
+      // 四档 label 位置类，与 plus/react 及 share 样式源（styles/form 的
+      // --top/--left/--right/--bottom 修饰类）对齐；旧 --label-* 类名与 CSS 断链，已废弃
+      `lh-form-item--${labelPosition}`,
       { 'lh-form-item--error': !!errorMessage },
       customClass,
     ]"

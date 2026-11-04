@@ -63,7 +63,7 @@ page {
   align-items: center;
   height: 24px;
   padding: 0 8px;
-  font-size: 12px;
+  font-size: var(--lh-font-size-extra-small, 12px);
   line-height: 1;
   border-radius: 4px;
   border: 1px solid var(--lh-border-color-base, #D8D3CC); /* hairline */
@@ -83,6 +83,9 @@ page {
   width: 16px;
   height: 16px;
   margin-left: 4px;
+  /* #ifdef H5 */
+  margin-inline-start: 4px;
+  /* #endif */
   padding: 0;
   border: none;
   background: transparent;
@@ -138,7 +141,7 @@ page {
 .lh-tag--large {
   height: 28px;
   padding: 0 10px;
-  font-size: 13px;
+  font-size: var(--lh-font-size-small, 13px);
 }
 .lh-tag {
   /* Variants */
@@ -148,6 +151,9 @@ page {
 }
 .lh-tag--hit {
   border-left: 3px solid var(--lh-primary-color, #2B4C7C);
+  /* #ifdef H5 */
+  border-inline-start: 3px solid var(--lh-primary-color, #2B4C7C);
+  /* #endif */
 }
 .lh-tag--disabled {
   opacity: 0.5;

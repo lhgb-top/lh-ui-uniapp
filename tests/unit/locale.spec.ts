@@ -2,15 +2,19 @@ import { afterEach, describe, expect, it } from 'vitest'
 import { computed, nextTick } from 'vue'
 
 /**
- * adapter/locale.ts 本地补键的回归测试。
+ * adapter/locale.ts 的补键回归测试。
  *
- * share 的 zh-CN / en-US 没有收录 dialog.confirm / dialog.cancel / input.clear /
- * select.clear / select.filter / select.empty，本仓在 adapter 模块初始化时用
- * share 的 lhlocale.add() 按语言深合并补齐。add() 会把合并结果持久化进 share 的
- * userLocales，setLocale 切换语言时 resolve() 优先取 userLocales，故补键在
- * 语言来回切换后仍然生效——本测试覆盖的正是这条链路（切走再切回）。
+ * 历史：share 的 zh-CN / en-US 曾缺少 dialog.confirm / dialog.cancel / input.clear /
+ * select.clear / select.filter / select.empty，组件 `t('dialog.confirm', '确定')`
+ * 永远走中文 fallback。昔日 share 只读（红线 1）之下曾用 adapter 的 lhlocale.add()
+ * 补齐作为过渡；现已在 share 十语言包中根治补齐，adapter 副本已拆除，本测试随之
+ * 转变为「share 语言包持续收录这些键」的回归守护（漏键会让非中文语言回显中文）。
  */
-import { lhlocale } from '@/adapter/locale'
+import { existsSync } from 'node:fs'
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { createRequire } from 'node:module'
+import { lhlocale, zhCN } from '@/adapter/locale'
 
 const ZH_EXTRA = {
   'dialog.confirm': '确定',
@@ -81,4 +85,31 @@ describe('adapter/locale 本地补键', () => {
     await nextTick()
     expect(label.value).toBe('确定')
   })
+})
+
+/**
+ * locale 使用键门禁：本仓源码里 t()/tm() 字面量键 ⊆ share zh-CN 叶子键。
+ * S-23 类漏键的根本防线（漏键会让非中文语言回显中文 fallback）。
+ * 兄弟仓脚本经 createRequire 加载——绕开 vite 模块图（仓外绝对路径会被
+ * 改写成 `/id/D:\...` 外部 id，fs.allow 也救不回）；家族布局下存在、
+ * CI 单仓 clone 时不存在则跳过（与 local-share-alias 存在性守卫同口径）。
+ */
+const SHARE_SCRIPT = join(
+  dirname(fileURLToPath(import.meta.url)),
+  '../../../lh-ui-share/scripts/collect-used-locale-keys.mjs',
+)
+
+describe('locale 使用键门禁', () => {
+  it.skipIf(!existsSync(SHARE_SCRIPT))(
+    '本仓 t()/tm() 字面量键都在 share zh-CN 语言包内（防漏键回退中文）',
+    () => {
+      const req = createRequire(import.meta.url)
+      const { collectUsedLocaleKeys, collectLocaleLeafKeys, findMissingKeys } = req(SHARE_SCRIPT)
+      const used = collectUsedLocaleKeys({
+        sourceDir: join(dirname(fileURLToPath(import.meta.url)), '../../src'),
+      })
+      const leaves = collectLocaleLeafKeys(zhCN)
+      expect(findMissingKeys(used, leaves)).toEqual([])
+    },
+  )
 })

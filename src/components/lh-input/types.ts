@@ -1,5 +1,6 @@
 import type { LhSxProps } from '@lh-ui/share/core/shared'
 import type { LhIconName } from '@lh-ui/share/core/icon'
+import type { LhInputLabelPosition } from '@lh-ui/share/core/input'
 import type { LH_SIZE_CONST } from '@lh-ui/share/constants'
 
 /**
@@ -79,6 +80,16 @@ export interface LhInputProps {
    */
   autosize?: boolean
   label?: string
+  /**
+   * label 位置：`float`（默认，浮动标签——聚焦/有值浮到左上缺口）
+   * / `top` / `bottom`（静态上下）/ `left` / `right`（同行内联）
+   *
+   * 【uni-app 差异】float 的 size 档位垂直微调依赖 :has（WXSS 不支持），
+   * 小程序端仅 medium 档精确，其余档位 label 垂直位置略偏；静态位置全端可用。
+   */
+  labelPosition?: LhInputLabelPosition
+  /** label 定宽（仅 left / right 位置生效；数字按 px，字符串原样） */
+  labelWidth?: string | number
   /** 自定义类名（透传到根节点） */
   customClass?: string
   /** 组件级主题变量，覆盖 ConfigProvider 配置 */

@@ -75,16 +75,28 @@ page {
 .lh-input__wrapper--focused .lh-input {
   border-color: var(--lh-primary-color, #2B4C7C) !important;
 }
-.lh-input__wrapper--has-label .lh-input {
+.lh-input__wrapper {
+  /* 仅浮动 label（--label-float）需要 textarea 的顶部留白：label 覆盖在控件上、
+     textarea 无固定高度，label 靠 16px 留白停靠。静态位置（top/left/right/bottom）
+     的 label 在控件外部的文档流里，不需要这 16px，也不产生这段 :has 依赖
+     （WXSS 无 :has，小程序端静态位置因此完全可用） */
+}
+.lh-input__wrapper--label-float:has(.lh-input--textarea) .lh-input {
   padding-top: 16px;
 }
 
 .lh-input__label {
   position: absolute;
   left: 12px;
-  top: 50%;
+  /* #ifdef H5 */
+  inset-inline-start: 12px;
+  /* #endif */
+  /* wrapper 的第一个在流内子元素就是 .lh-input（label 绝对定位不占流），故相对
+     wrapper 顶边的「控件高度 / 2」即输入框的垂直中心。不能用 top: 50%——
+     同渲染 .lh-input__count 时 wrapper 被撑高，50% 会高于输入框中心 */
+  top: calc(var(--lh-control-height-medium, 32px) / 2);
   transform: translateY(-50%);
-  font-size: 14px;
+  font-size: var(--lh-font-size-base, 14px);
   color: var(--lh-text-placeholder, #B0B0B0);
   pointer-events: none;
   transition: all 0.2s ease;
@@ -96,13 +108,112 @@ page {
   color: var(--lh-primary-color, #2B4C7C);
 }
 
-.lh-input__wrapper:has(.lh-input--textarea) .lh-input__label {
+/* label 的垂直基准随 size 档位变化：size 类挂在 .lh-input 上、label 挂在 wrapper 上，
+   只能跨元素用 :has 匹配。仅浮动位置需要（静态位置 label 在文档流里） */
+.lh-input__wrapper--label-float:has(.lh-input--mini) .lh-input__label {
+  top: calc(var(--lh-control-height-mini, 20px) / 2);
+}
+
+.lh-input__wrapper--label-float:has(.lh-input--small) .lh-input__label {
+  top: calc(var(--lh-control-height-small, 24px) / 2);
+}
+
+.lh-input__wrapper--label-float:has(.lh-input--large) .lh-input__label {
+  top: calc(var(--lh-control-height-large, 40px) / 2);
+}
+
+.lh-input__wrapper--label-float:has(.lh-input--textarea) .lh-input__label {
   top: 16px;
   transform: translateY(0);
 }
-.lh-input__wrapper:has(.lh-input--textarea) .lh-input__label--float {
+.lh-input__wrapper--label-float:has(.lh-input--textarea) .lh-input__label--float {
   top: 0;
   transform: translateY(-50%) scale(0.85);
+}
+
+.lh-input__wrapper--label-top .lh-input__label,
+.lh-input__wrapper--label-bottom .lh-input__label,
+.lh-input__wrapper--label-left .lh-input__label,
+.lh-input__wrapper--label-right .lh-input__label {
+  position: static;
+  top: auto;
+  left: auto;
+  /* #ifdef H5 */
+  inset-inline-start: auto;
+  /* #endif */
+  transform: none;
+  color: var(--lh-text-regular, #5A5A5A);
+  transition: none;
+}
+
+.lh-input__wrapper--label-top {
+  flex-direction: column;
+  align-items: stretch;
+}
+.lh-input__wrapper--label-top .lh-input__label {
+  margin-bottom: 6px;
+  /* 静态标签与控件左缘对齐 */
+  text-align: left;
+  /* #ifdef H5 */
+  text-align: start;
+  /* #endif */
+}
+
+.lh-input__wrapper--label-bottom {
+  flex-direction: column;
+  align-items: stretch;
+  /* DOM 顺序 label 在前（与 float/top 同构），底部位置用 order 调到控件之后；
+     count（字数统计）保持在最末 */
+}
+.lh-input__wrapper--label-bottom .lh-input__label {
+  order: 1;
+  margin-top: 6px;
+  text-align: left;
+  /* #ifdef H5 */
+  text-align: start;
+  /* #endif */
+}
+.lh-input__wrapper--label-bottom .lh-input__count {
+  order: 2;
+}
+
+.lh-input__wrapper--label-left,
+.lh-input__wrapper--label-right {
+  flex-direction: row;
+  align-items: center;
+}
+.lh-input__wrapper--label-left .lh-input__label,
+.lh-input__wrapper--label-right .lh-input__label {
+  /* 行内布局下 label 不抢宽度：labelWidth prop 可经内联样式指定定宽 */
+  max-width: 40%;
+  line-height: 1.4;
+}
+
+.lh-input__wrapper--label-left .lh-input__label {
+  margin-right: 8px;
+  /* #ifdef H5 */
+  margin-inline-end: 8px;
+  /* #endif */
+  /* 标签文字贴向控件一侧（LTR 右对齐 / RTL 左对齐） */
+  text-align: right;
+  /* #ifdef H5 */
+  text-align: end;
+  /* #endif */
+}
+
+.lh-input__wrapper--label-right .lh-input__label {
+  order: 1;
+  margin-left: 8px;
+  /* #ifdef H5 */
+  margin-inline-start: 8px;
+  /* #endif */
+  text-align: left;
+  /* #ifdef H5 */
+  text-align: start;
+  /* #endif */
+}
+.lh-input__wrapper--label-right .lh-input__count {
+  order: 2;
 }
 
 .lh-input {
@@ -110,6 +221,8 @@ page {
   display: inline-flex;
   align-items: center;
   width: 100%;
+  /* control-height 令牌语义为外高（border-box），1px 边框计入高度 */
+  box-sizing: border-box;
   border: 1px solid var(--lh-border-color-base, #D8D3CC); /* hairline */
   border-radius: 2px;
   background-color: var(--lh-bg-color, #FAF6F0);
@@ -149,27 +262,49 @@ page {
 .lh-input--disabled .lh-input__clear {
   display: none !important;
 }
+.lh-input {
+  /* 高度由 control-height 令牌固定在容器上（border-box），垂直 padding 清零——
+     文本靠容器已有的 align-items: center 居中，垂直 padding 会让内容高出内容盒 */
+}
+.lh-input--mini {
+  height: var(--lh-control-height-mini, 20px);
+}
 .lh-input--mini .lh-input__inner {
-  padding: 4px 8px;
-  font-size: 12px;
+  padding: 0 8px;
+  font-size: var(--lh-font-size-extra-small, 12px);
+}
+.lh-input--small {
+  height: var(--lh-control-height-small, 24px);
 }
 .lh-input--small .lh-input__inner {
-  padding: 6px 10px;
-  font-size: 12px;
+  padding: 0 10px;
+  font-size: var(--lh-font-size-extra-small, 12px);
+}
+.lh-input--medium {
+  height: var(--lh-control-height-medium, 32px);
 }
 .lh-input--medium .lh-input__inner {
-  padding: 8px 12px;
-  font-size: 14px;
+  padding: 0 12px;
+  font-size: var(--lh-font-size-base, 14px);
+}
+.lh-input--large {
+  height: var(--lh-control-height-large, 40px);
 }
 .lh-input--large .lh-input__inner {
-  padding: 12px 16px;
-  font-size: 16px;
+  padding: 0 16px;
+  font-size: var(--lh-font-size-medium, 16px);
 }
 .lh-input--prefix .lh-input__inner {
   padding-left: 30px;
+  /* #ifdef H5 */
+  padding-inline-start: 30px;
+  /* #endif */
 }
 .lh-input--suffix .lh-input__inner {
   padding-right: 30px;
+  /* #ifdef H5 */
+  padding-inline-end: 30px;
+  /* #endif */
 }
 .lh-input__inner {
   flex: 1;
@@ -218,6 +353,11 @@ page {
   color: var(--lh-text-regular, #5A5A5A);
 }
 /* #endif */
+.lh-input--textarea {
+  /* textarea 无固定高度：上方 size 档的 height 只作用于单行输入框，
+     textarea 容器同样带 .lh-input--{size} 类，须显式排除 */
+  height: auto;
+}
 .lh-input--textarea .lh-input__inner {
   display: block;
   width: 100%;
@@ -228,9 +368,12 @@ page {
 .lh-input__count {
   display: inline-block;
   margin-top: 4px;
-  font-size: 12px;
+  font-size: var(--lh-font-size-extra-small, 12px);
   color: var(--lh-text-secondary, #8A8A8A);
   text-align: right;
+  /* #ifdef H5 */
+  text-align: end;
+  /* #endif */
   line-height: 1.2;
 }
 

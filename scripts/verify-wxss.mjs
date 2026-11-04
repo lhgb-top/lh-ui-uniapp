@@ -31,6 +31,20 @@ function collectComponentStyles() {
     .filter((file) => fs.existsSync(file))
 }
 
+/**
+ * 命令式服务宿主样式（2026-11-04 三仓同步）：挂载点组件若在 src/{message,loading}/
+ * （wxapp 形态），其 lh-*-host.wxss 与组件产物同级进门禁；uniapp 侧自动 no-op。
+ */
+function collectHostStyles() {
+  const HOSTS = [
+    ['src/message', 'lh-message-host'],
+    ['src/loading', 'lh-loading-host'],
+  ]
+  return HOSTS.map(([dir, name]) => resolvePath(`${dir}/${name}.wxss`)).filter((file) =>
+    fs.existsSync(file),
+  )
+}
+
 // 每条违规规则：[正则, 说明]
 const RULES = [
   [/\*(?![\w-])/g, '通配符选择器（WXSS 不支持）'],
@@ -116,7 +130,7 @@ function analyze(file, rawText, problems) {
 }
 
 function main() {
-  const files = [...targets, ...collectComponentStyles()]
+  const files = [...targets, ...collectComponentStyles(), ...collectHostStyles()]
   const problems = []
 
   for (const file of files) {

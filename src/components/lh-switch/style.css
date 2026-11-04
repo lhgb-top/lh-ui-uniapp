@@ -61,7 +61,7 @@ page {
 .lh-switch {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--lh-spacing-sm, 8px);
   cursor: pointer;
   -webkit-user-select: none;
   user-select: none;
@@ -69,6 +69,9 @@ page {
 }
 .lh-switch__core {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 40px;
   height: 22px;
   background-color: var(--lh-border-color-base, #D8D3CC);
@@ -86,11 +89,12 @@ page {
   border-radius: 50%;
   transition: transform 0.3s;
 }
+.lh-switch {
+  /* loading 指示器由 __core 的 flex 布局居中，不再用绝对定位 + translate：
+     原先 translate(-50%,-50%) 在 base 与 keyframes 里重复硬编码，
+     改自转后 keyframes 只需 rotate */
+}
 .lh-switch__loading {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   width: 14px;
   height: 14px;
   border: 2px solid var(--lh-switch-knob-color, #fff);
@@ -99,7 +103,7 @@ page {
   animation: lh-switch-loading-spin 0.6s linear infinite;
 }
 .lh-switch__label {
-  font-size: 14px;
+  font-size: var(--lh-font-size-base, 14px);
   color: var(--lh-text-primary, #2C2C2C);
 }
 .lh-switch--checked .lh-switch__core {
@@ -109,7 +113,7 @@ page {
   transform: translateX(18px);
 }
 .lh-switch {
-  /* loading 指示器绝对居中于轨道，checked 时滑块右移会与之重叠，loading 期间隐藏滑块 */
+  /* loading 指示器由轨道 flex 居中，checked 时滑块右移会与之重叠，loading 期间隐藏滑块 */
 }
 .lh-switch--loading .lh-switch__core::after {
   opacity: 0;
@@ -126,7 +130,12 @@ page {
   width: 14px;
   height: 14px;
 }
-.lh-switch--small .lh-switch--checked__core::after {
+.lh-switch {
+  /* 修饰符都在根元素上，必须写成复合选择器 `.lh-switch--small.lh-switch--checked`；
+     写成后代组合（&--small &--checked）永不匹配，size 档位移会退化为基础 18px。
+     注意 dart-sass 不允许 `&--small&--checked`（& 只能位于复合选择器开头），故第二段修饰符写全类名 */
+}
+.lh-switch--small.lh-switch--checked .lh-switch__core::after {
   transform: translateX(14px);
 }
 .lh-switch--large .lh-switch__core {
@@ -137,13 +146,37 @@ page {
   width: 26px;
   height: 26px;
 }
-.lh-switch--large .lh-switch--checked__core::after {
+.lh-switch--large.lh-switch--checked .lh-switch__core::after {
   transform: translateX(22px);
 }
 
+/* RTL 镜像：滑块位移由 transform 驱动（无逻辑等价），checked 时滑块改向行首移动。
+   LTR 行为完全不变；此处仅按 [dir='rtl'] 翻转位移与起始边。 */
+/* #ifdef H5 */
+[dir=rtl] .lh-switch__core::after {
+  left: auto;
+  right: 1px;
+}
+/* #endif */
+/* #ifdef H5 */
+[dir=rtl] .lh-switch--checked .lh-switch__core::after {
+  transform: translateX(-18px);
+}
+/* #endif */
+/* #ifdef H5 */
+[dir=rtl] .lh-switch--small.lh-switch--checked .lh-switch__core::after {
+  transform: translateX(-14px);
+}
+/* #endif */
+/* #ifdef H5 */
+[dir=rtl] .lh-switch--large.lh-switch--checked .lh-switch__core::after {
+  transform: translateX(-22px);
+}
+/* #endif */
+
 @keyframes lh-switch-loading-spin {
   to {
-    transform: translate(-50%, -50%) rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 /* 键盘焦点环：统一由 theme/common/a11y.scss 的 focus-ring 令牌驱动 */

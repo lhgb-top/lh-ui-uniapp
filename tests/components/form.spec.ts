@@ -107,7 +107,7 @@ describe('LhForm', () => {
     expect(wrapper.find('.lh-form-item__error').exists()).toBe(false)
   })
 
-  it('applies label position class', () => {
+  it('applies label position class (四档与 plus 及 share 样式源对齐)', () => {
     const wrapper = mount({
       components: { LhForm, LhFormItem },
       data: () => ({ model: {} }),
@@ -115,7 +115,17 @@ describe('LhForm', () => {
         <lh-form-item label="姓名"><view /></lh-form-item>
       </lh-form>`,
     })
-    expect(wrapper.find('.lh-form--label-top').exists()).toBe(true)
-    expect(wrapper.find('.lh-form-item--label-top').exists()).toBe(true)
+    expect(wrapper.find('.lh-form-item--top').exists()).toBe(true)
+  })
+
+  it('bottom 位置发对应修饰类', () => {
+    const wrapper = mount({
+      components: { LhForm, LhFormItem },
+      data: () => ({ model: {} }),
+      template: `<lh-form :model="model" label-position="bottom">
+        <lh-form-item label="姓名"><view /></lh-form-item>
+      </lh-form>`,
+    })
+    expect(wrapper.find('.lh-form-item--bottom').exists()).toBe(true)
   })
 })

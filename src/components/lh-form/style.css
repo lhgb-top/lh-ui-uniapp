@@ -68,7 +68,7 @@ page {
 .lh-form--inline {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: var(--lh-spacing-base, 16px);
 }
 
 .lh-form-item {
@@ -78,13 +78,25 @@ page {
 }
 .lh-form-item__label {
   flex: 0 0 auto;
-  padding: 7px 12px 0 0;
+  /* 标签与控件之间的间距走 inline 轴，RTL 下自动镜像 */
+  padding-top: 7px;
+  padding-right: 12px;
+  /* #ifdef H5 */
+  padding-inline-end: 12px;
+  /* #endif */
   color: var(--lh-text-regular, #5A5A5A);
   line-height: 20px;
+  /* 标签文字贴向控件一侧（LTR 右对齐 / RTL 左对齐） */
   text-align: right;
+  /* #ifdef H5 */
+  text-align: end;
+  /* #endif */
 }
 .lh-form-item__required {
   margin-right: 4px;
+  /* #ifdef H5 */
+  margin-inline-end: 4px;
+  /* #endif */
   color: var(--lh-danger-color, #B23A3A);
 }
 .lh-form-item__content {
@@ -95,7 +107,7 @@ page {
   display: block;
   margin-top: 4px;
   color: var(--lh-danger-color, #B23A3A);
-  font-size: 12px;
+  font-size: var(--lh-font-size-extra-small, 12px);
   line-height: 18px;
 }
 .lh-form-item--top {
@@ -105,6 +117,43 @@ page {
   display: block;
   padding: 0 0 6px;
   text-align: left;
+  /* #ifdef H5 */
+  text-align: start;
+  /* #endif */
+}
+.lh-form-item {
+  /* 'left' / 'right'：沿 Element Plus 口径——label 仍在控件左侧，两档只差
+     label 文字对齐（left 起始对齐 / right 贴控件一侧，后者即基础样式）。
+     'bottom' 是真正的位置档：label 调到控件下方 */
+}
+.lh-form-item--left .lh-form-item__label {
+  text-align: left;
+  /* #ifdef H5 */
+  text-align: start;
+  /* #endif */
+}
+.lh-form-item--right {
+  /* 与基础样式一致（label 文字贴控件一侧），显式类提供选择器钩子 */
+}
+.lh-form-item--right .lh-form-item__label {
+  text-align: right;
+  /* #ifdef H5 */
+  text-align: end;
+  /* #endif */
+}
+.lh-form-item--bottom {
+  flex-direction: column;
+}
+.lh-form-item--bottom .lh-form-item__label {
+  order: 2;
+  padding: 6px 0 0;
+  text-align: left;
+  /* #ifdef H5 */
+  text-align: start;
+  /* #endif */
+}
+.lh-form-item--bottom .lh-form-item__content {
+  order: 1;
 }
 
 /* 键盘焦点环：统一由 theme/common/a11y.scss 的 focus-ring 令牌驱动 */

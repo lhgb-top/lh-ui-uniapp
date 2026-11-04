@@ -1,8 +1,10 @@
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import {
   getWordCount,
   shouldShowWordLimit,
   clampString,
+  getInputLabelClassNames,
+  getInputWrapperModifiers,
 } from '@lh-ui/share/core/input'
 import { useLhComponent } from '@/composables'
 import type { LhEmitFn } from '@/types/emit'
@@ -57,6 +59,51 @@ export function useLhInput(
 
   const inputStyle = componentStyle
 
+  /** 聚焦态：wrapper --focused 类与 float label 浮起判定共用（plus/react 同名状态） */
+  const isFocused = ref(false)
+
+  /** label 类名与浮动判定：core 纯函数产出 */
+  const labelClasses = computed(() =>
+    getInputLabelClassNames({
+      value: inputValue.value,
+      isFocused: isFocused.value,
+      labelPosition: props.labelPosition ?? 'float',
+    }),
+  )
+
+  /** wrapper 修饰类：has-label / has-value / label 位置 */
+  const wrapperModifiers = computed(() =>
+    getInputWrapperModifiers({
+      value: inputValue.value,
+      label: props.label ?? '',
+      labelPosition: props.labelPosition ?? 'float',
+    }),
+  )
+
+  /**
+   * label 定宽（仅 left/right 位置生效）：数字按 px，字符串原样。
+   * 静态行内位置 label 上的 max-width 约束同步解除。
+   */
+  const labelStyle = computed(() => {
+    if (!props.labelWidth || (props.labelPosition !== 'left' && props.labelPosition !== 'right')) {
+      return undefined
+    }
+    const width =
+      typeof props.labelWidth === 'number' ? `${props.labelWidth}px` : props.labelWidth
+    return `width:${width};max-width:none;`
+  })
+
+  /**
+   * textarea + 浮动 label 的顶部留白：share 样式走 :has 选择器（WXSS 不支持），
+   * 小程序端改由内联样式兜底（本仓 placeholder-style 同款 MP 工作法）。
+   * H5 端内联与 :has 规则同值叠加，视觉一致。
+   */
+  const textareaFloatStyle = computed(() =>
+    isTextarea.value && props.label && (props.labelPosition ?? 'float') === 'float'
+      ? 'padding-top:16px;'
+      : undefined,
+  )
+
   /** placeholder 样式（MP 端必需，替代 ::placeholder） */
   const placeholderStyle = computed(() => {
     if (props.placeholderStyle) return props.placeholderStyle
@@ -80,6 +127,7 @@ export function useLhInput(
   }
 
   function handleBlur(e: Event) {
+    isFocused.value = false
     if (props.readonly) return
     const value = resolveUniValue(e)
     emit('update:modelValue', value)
@@ -87,6 +135,7 @@ export function useLhInput(
   }
 
   function handleFocus(e: Event) {
+    isFocused.value = true
     emit('focus', e)
   }
 
@@ -103,6 +152,11 @@ export function useLhInput(
     inputClass,
     inputStyle,
     placeholderStyle,
+    isFocused,
+    labelClasses,
+    wrapperModifiers,
+    labelStyle,
+    textareaFloatStyle,
     handleInput,
     handleBlur,
     handleFocus,

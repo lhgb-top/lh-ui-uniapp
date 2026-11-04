@@ -93,18 +93,21 @@ page {
 }
 .lh-checkbox--checked .lh-checkbox__box::after, .lh-checkbox--indeterminate .lh-checkbox__box::after {
   position: absolute;
-  top: 2px;
-  left: 5px;
+  /* 50% 居中相对盒子的 padding 盒（= 内容区），与盒子尺寸解耦：
+     原先 top:2/left:5 只在 16px 盒下正确，改尺寸即偏 */
+  top: 50%;
+  left: 50%;
   width: 4px;
   height: 8px;
   border: solid #fff;
   border-width: 0 2px 2px 0;
   content: "";
-  transform: rotate(45deg);
+  /* translate 须在 rotate 之前：rotate 在前会让 translate 沿旋转后的坐标轴平移 */
+  transform: translate(-50%, -50%) rotate(45deg);
 }
 .lh-checkbox--indeterminate .lh-checkbox__box::after {
-  top: 6px;
-  left: 3px;
+  top: 50%;
+  left: 50%;
   width: 8px;
   height: 2px;
   border: 0;
@@ -117,24 +120,24 @@ page {
   opacity: 0.7;
 }
 .lh-checkbox--small {
-  font-size: 12px;
+  font-size: var(--lh-font-size-extra-small, 12px);
   transform: scale(0.9);
   transform-origin: left center;
 }
 .lh-checkbox--large {
-  font-size: 16px;
+  font-size: var(--lh-font-size-medium, 16px);
 }
 
 .lh-checkbox-group {
   display: inline-flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: var(--lh-spacing-md, 12px);
 }
 .lh-checkbox-group--small {
-  gap: 8px;
+  gap: var(--lh-spacing-sm, 8px);
 }
 .lh-checkbox-group--large {
-  gap: 16px;
+  gap: var(--lh-spacing-base, 16px);
 }
 
 /* 键盘焦点环：统一由 theme/common/a11y.scss 的 focus-ring 令牌驱动 */

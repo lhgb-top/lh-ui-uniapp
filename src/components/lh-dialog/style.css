@@ -131,6 +131,9 @@ page {
   content: "";
   position: absolute;
   left: 0;
+  /* #ifdef H5 */
+  inset-inline-start: 0;
+  /* #endif */
   top: 50%;
   transform: translateY(-50%);
   width: 3px;
@@ -144,6 +147,9 @@ page {
   color: var(--lh-text-primary, #2C2C2C);
   line-height: 1.4;
   padding-left: 12px;
+  /* #ifdef H5 */
+  padding-inline-start: 12px;
+  /* #endif */
 }
 .lh-dialog__close {
   display: inline-flex;
@@ -175,6 +181,12 @@ page {
 .lh-dialog__footer {
   padding: 10px 20px 20px;
   text-align: right;
+  /* #ifdef H5 */
+  text-align: right;
+  /* #ifdef H5 */
+  text-align: end;
+  /* #endif */
+  /* #endif */
   border-top: 1px solid var(--lh-border-color-light, #E5E0D8); /* hairline */
   flex-shrink: 0;
   display: flex;
@@ -189,6 +201,9 @@ page {
   position: absolute;
   top: 15px;
   right: 20px;
+  /* #ifdef H5 */
+  inset-inline-end: 20px;
+  /* #endif */
 }
 .lh-dialog--center .lh-dialog__body {
   text-align: center;

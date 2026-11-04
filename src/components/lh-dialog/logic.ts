@@ -90,13 +90,20 @@ export function useLhDialog(
    * 外部 v-model 主动置 false 时不应被拦截——否则多弹层叠加时，非栈顶弹层的
    * footer 取消按钮会失效（visible 已改但被 isTopmost 吞掉，形成死锁）。
    */
+  /** 关闭退场的定时器：卸载时清理，避免组件销毁后还向父组件发射事件 */
+  let closeTimer: ReturnType<typeof setTimeout> | undefined
+  let unmounted = false
+
   function close(options?: { interactive?: boolean }) {
     if (!visible.value || closing.value) return
     if (options?.interactive && !isTopmost()) return
     closing.value = true
 
     // 动画结束后真正隐藏（MP 端 transitionend 不可靠，用 setTimeout 对齐）
-    setTimeout(() => {
+    // 双层卸载守卫：onBeforeUnmount 清 timer 之外，回调内也校验——两者只其一
+    // 时 setTimeout 仍可能在卸载与清理之间的缝隙里触发 emit
+    closeTimer = setTimeout(() => {
+      if (unmounted) return
       visible.value = false
       closing.value = false
       unregister()
@@ -116,14 +123,17 @@ export function useLhDialog(
     }
   }
 
-  // #ifdef H5
+  // 条件编译安全范式（照 popover / dropdown / drawer 先例）：函数声明双端存在，
+  // 仅函数体内 H5 专属语句被裁剪——若把整个声明放进 H5 块、返回对象却无条件引用，
+  // MP 端产物会出现 handleEsc 悬空引用，setup 执行即 ReferenceError
   function handleEsc() {
+    // #ifdef H5
     if (!LH_IS_H5 || !visible.value || !isTopmost()) return
     if (canClose({ closeOnPressEscape: props.closeOnPressEscape }, 'escape')) {
       close({ interactive: true })
     }
+    // #endif
   }
-  // #endif
 
   // modelValue 双向同步（外部 v-model 控制打开/关闭）
   watch(
@@ -146,6 +156,11 @@ export function useLhDialog(
   })
 
   onBeforeUnmount(() => {
+    unmounted = true
+    if (closeTimer !== undefined) {
+      clearTimeout(closeTimer)
+      closeTimer = undefined
+    }
     // #ifdef H5
     restoreOverflow?.()
     // #endif

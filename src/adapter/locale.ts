@@ -30,26 +30,14 @@ shareLhlocale.subscribe((v) => {
 })
 
 /**
- * 本库组件用到、但 share 语言包尚未收录的文案键。
+ * 本库组件用到的文案键已全部收录进 share 十语言包。
  *
- * share 的 zh-CN / en-US 没有 dialog.confirm / dialog.cancel / input.clear /
- * select.clear / select.filter / select.empty，组件里 `t('dialog.confirm', '确定')`
- * 会永远走中文 fallback —— 切到英文后对话框按钮仍显示「确定/取消」。
- * share 只读（红线 1），在此用 share 的 add() 按语言深合并补齐（add 会持久化进
- * userLocales，setLocale 切换语言后仍生效）。其他语言未内置，沿用各自的 fallback。
+ * 历史：share 的 zh-CN / en-US 曾缺少 dialog.confirm / dialog.cancel /
+ * input.clear / select.clear / select.filter / select.empty / cascader.filter，
+ * 组件里 `t('dialog.confirm', '确定')` 永远走中文 fallback —— 切到英文后对话框
+ * 按钮仍显示「确定/取消」。昔日 share 只读（红线 1）之下用 share 的 add() 补齐
+ * 作为过渡处置；现已在 share 十语言包中根治补齐，本副本随之拆除。
  */
-const LH_LOCALE_EXTRA_ZH_CN = {
-  dialog: { confirm: '确定', cancel: '取消' },
-  input: { clear: '清空' },
-  select: { clear: '清空', filter: '搜索', empty: '无匹配项' },
-}
-const LH_LOCALE_EXTRA_EN_US = {
-  dialog: { confirm: 'OK', cancel: 'Cancel' },
-  input: { clear: 'Clear' },
-  select: { clear: 'Clear', filter: 'Search', empty: 'No matches' },
-}
-shareLhlocale.add('zh-CN', LH_LOCALE_EXTRA_ZH_CN)
-shareLhlocale.add('en-US', LH_LOCALE_EXTRA_EN_US)
 
 /**
  * 响应式版 lhlocale：读 t() 前先 void version.value 建立响应式依赖，

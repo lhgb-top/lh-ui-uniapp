@@ -119,7 +119,7 @@ page {
   background: var(--lh-text-disabled, #C8C8C8);
 }
 .lh-radio--small {
-  font-size: 12px;
+  font-size: var(--lh-font-size-extra-small, 12px);
   transform: scale(0.9);
   transform-origin: left center;
 }
@@ -132,7 +132,7 @@ page {
   height: 6px;
 }
 .lh-radio--large {
-  font-size: 16px;
+  font-size: var(--lh-font-size-medium, 16px);
 }
 .lh-radio--large .lh-radio__box {
   width: 18px;
@@ -146,13 +146,13 @@ page {
 .lh-radio-group {
   display: inline-flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: var(--lh-spacing-md, 12px);
 }
 .lh-radio-group--small {
-  gap: 8px;
+  gap: var(--lh-spacing-sm, 8px);
 }
 .lh-radio-group--large {
-  gap: 16px;
+  gap: var(--lh-spacing-base, 16px);
 }
 
 /* 键盘焦点环：统一由 theme/common/a11y.scss 的 focus-ring 令牌驱动 */

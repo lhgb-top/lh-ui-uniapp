@@ -79,6 +79,32 @@ describe('LhInput', () => {
 
   it('applies state class', () => {
     const wrapper = mount(LhInput, { props: { state: 'error' } })
-    expect(wrapper.classes()).toContain('lh-input--error')
+    // 根节点是 wrapper（label 布局层），state/size 类挂在内部 .lh-input 上
+    expect(wrapper.find('.lh-input').classes()).toContain('lh-input--error')
+  })
+
+  it('renders floating label and wrapper modifiers (labelPosition)', async () => {
+    const wrapper = mount(LhInput, {
+      props: { modelValue: '', label: '用户名', labelPosition: 'float' },
+    })
+    expect(wrapper.find('.lh-input__label').exists()).toBe(true)
+    expect(wrapper.classes()).toContain('lh-input__wrapper--has-label')
+    expect(wrapper.classes()).toContain('lh-input__wrapper--label-float')
+    // 空值未聚焦：不浮起
+    expect(wrapper.find('.lh-input__label').classes()).not.toContain('lh-input__label--float')
+
+    // 聚焦 → 浮起
+    await wrapper.find('.lh-input__inner').trigger('focus')
+    expect(wrapper.find('.lh-input__label').classes()).toContain('lh-input__label--float')
+  })
+
+  it('static label positions emit their wrapper class and never float', () => {
+    for (const position of ['top', 'left', 'right', 'bottom'] as const) {
+      const wrapper = mount(LhInput, {
+        props: { modelValue: '有值', label: '用户名', labelPosition: position },
+      })
+      expect(wrapper.classes()).toContain(`lh-input__wrapper--label-${position}`)
+      expect(wrapper.find('.lh-input__label').classes()).not.toContain('lh-input__label--float')
+    }
   })
 })

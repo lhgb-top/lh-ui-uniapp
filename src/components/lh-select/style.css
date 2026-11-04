@@ -66,7 +66,7 @@ page {
      需要随容器收缩，否则触发器溢出（触发器内部是 width: 100%，会跟着根元素走） */
   max-width: 100%;
   color: var(--lh-text-primary, #2C2C2C);
-  font-size: 14px;
+  font-size: var(--lh-font-size-base, 14px);
 }
 .lh-select__trigger {
   display: flex;
@@ -104,6 +104,9 @@ page {
   align-items: center;
   gap: 6px;
   margin-left: 8px;
+  /* #ifdef H5 */
+  margin-inline-start: 8px;
+  /* #endif */
 }
 .lh-select__clear {
   width: 18px;
@@ -135,7 +138,10 @@ page {
   border: 1px solid var(--lh-border-color-light, #E5E0D8); /* hairline */
   border-radius: 2px;
   background: var(--lh-bg-color, #FAF6F0);
-  box-shadow: 0 6px 16px rgba(44, 44, 44, 0.12);
+  /* 弹层阴影声明在自身规则内（card 局部令牌模式）：popperContainer 透传后
+     DOM 被搬出 .lh-select，根作用域变量继承失效，自身声明仍然生效 */
+  --lh-select-dropdown-shadow: 0 6px 16px rgba(44, 44, 44, 0.12);
+  box-shadow: var(--lh-select-dropdown-shadow);
 }
 .lh-select__dropdown--teleported {
   position: fixed;
@@ -153,6 +159,9 @@ page {
   background: transparent;
   cursor: pointer;
   text-align: left;
+  /* #ifdef H5 */
+  text-align: start;
+  /* #endif */
 }
 /* #ifdef H5 */
 .lh-select__option:hover {
@@ -179,12 +188,12 @@ page {
   text-align: center;
 }
 .lh-select--small .lh-select__trigger {
-  min-height: 24px;
-  font-size: 12px;
+  min-height: var(--lh-control-height-small, 24px);
+  font-size: var(--lh-font-size-extra-small, 12px);
 }
 .lh-select--large .lh-select__trigger {
-  min-height: 40px;
-  font-size: 16px;
+  min-height: var(--lh-control-height-large, 40px);
+  font-size: var(--lh-font-size-medium, 16px);
 }
 .lh-select--disabled {
   opacity: 0.6;
