@@ -428,6 +428,54 @@ const componentItems: { slug: string; labels: Labels }[] = [
     slug: 'upload',
     labels: { 'zh-CN': 'Upload 上传', 'en-US': 'Upload', 'zh-TW': 'Upload 上傳', 'ja-JP': 'Upload アップロード', 'ko-KR': 'Upload 업로드', es: 'Upload (subida de archivos)', ar: 'Upload (رفع الملفات)', 'fr-FR': 'Upload (envoi de fichiers)', ru: 'Upload (загрузка файлов)' },
   },
+  {
+    slug: 'affix',
+    labels: { 'zh-CN': 'Affix 固定', 'en-US': 'Affix', 'zh-TW': 'Affix 固定', 'ja-JP': 'Affix 固定表示', 'ko-KR': 'Affix 고정', es: 'Affix (fijo)', ar: 'Affix (تثبيت)', 'fr-FR': 'Affix (fixe)', ru: 'Affix (фиксация)' },
+  },
+  {
+    slug: 'backtop',
+    labels: { 'zh-CN': 'BackTop 返回顶部', 'en-US': 'BackTop', 'zh-TW': 'BackTop 返回頂部', 'ja-JP': 'BackTop トップへ戻る', 'ko-KR': 'BackTop 맨 위로', es: 'BackTop (volver arriba)', ar: 'BackTop (العودة للأعلى)', 'fr-FR': 'BackTop (retour en haut)', ru: 'BackTop (наверх)' },
+  },
+  {
+    slug: 'anchor',
+    labels: { 'zh-CN': 'Anchor 锚点导航', 'en-US': 'Anchor', 'zh-TW': 'Anchor 錨點導航', 'ja-JP': 'Anchor アンカーナビ', 'ko-KR': 'Anchor 앵커 내비게이션', es: 'Anchor (navegación de anclas)', ar: 'Anchor (تنقل المراسي)', 'fr-FR': 'Anchor (ancres)', ru: 'Anchor (якорная навигация)' },
+  },
+  {
+    slug: 'virtual-list',
+    labels: { 'zh-CN': 'VirtualList 虚拟列表', 'en-US': 'VirtualList', 'zh-TW': 'VirtualList 虛擬列表', 'ja-JP': 'VirtualList 仮想リスト', 'ko-KR': 'VirtualList 가상 리스트', es: 'VirtualList (lista virtual)', ar: 'VirtualList (قائمة افتراضية)', 'fr-FR': 'VirtualList (liste virtuelle)', ru: 'VirtualList (виртуальный список)' },
+  },
+  {
+    slug: 'table',
+    labels: { 'zh-CN': 'Table 表格', 'en-US': 'Table', 'zh-TW': 'Table 表格', 'ja-JP': 'Table テーブル', 'ko-KR': 'Table 테이블', es: 'Table (tabla)', ar: 'Table (جدول)', 'fr-FR': 'Table (tableau)', ru: 'Table (таблица)' },
+  },
+  {
+    slug: 'result',
+    labels: { 'zh-CN': 'Result 结果页', 'en-US': 'Result', 'zh-TW': 'Result 結果頁', 'ja-JP': 'Result 結果ページ', 'ko-KR': 'Result 결과 페이지', es: 'Result (página de resultado)', ar: 'Result (صفحة النتيجة)', 'fr-FR': 'Result (page de résultat)', ru: 'Result (страница результата)' },
+  },
+  {
+    slug: 'text',
+    labels: { 'zh-CN': 'Text 排版文本', 'en-US': 'Text', 'zh-TW': 'Text 排版文本', 'ja-JP': 'Text テキスト', 'ko-KR': 'Text 텍스트', es: 'Text (texto tipográfico)', ar: 'Text (نص)', 'fr-FR': 'Text (texte)', ru: 'Text (текст)' },
+  },
+  {
+    slug: 'link',
+    labels: { 'zh-CN': 'Link 链接', 'en-US': 'Link', 'zh-TW': 'Link 連結', 'ja-JP': 'Link リンク', 'ko-KR': 'Link 링크', es: 'Link (enlace)', ar: 'Link (رابط)', 'fr-FR': 'Link (lien)', ru: 'Link (ссылка)' },
+  },
+  {
+    slug: 'input-tag',
+    labels: { 'zh-CN': 'InputTag 标签输入', 'en-US': 'InputTag', 'zh-TW': 'InputTag 標籤輸入', 'ja-JP': 'InputTag タグ入力', 'ko-KR': 'InputTag 태그 입력', es: 'InputTag (entrada de etiquetas)', ar: 'InputTag (إدخال الوسوم)', 'fr-FR': 'InputTag (saisie de étiquettes)', ru: 'InputTag (ввод тегов)' },
+  },
+  {
+    slug: 'autocomplete',
+    labels: { 'zh-CN': 'Autocomplete 自动补全', 'en-US': 'Autocomplete', 'zh-TW': 'Autocomplete 自動補全', 'ja-JP': 'Autocomplete オートコンプリート', 'ko-KR': 'Autocomplete 자동 완성', es: 'Autocomplete (autocompletado)', ar: 'Autocomplete (الإكمال التلقائي)', 'fr-FR': 'Autocomplete (saisie automatique)', ru: 'Autocomplete (автодополнение)' },
+  },
+  {
+    slug: 'mentions',
+    labels: { 'zh-CN': 'Mentions 提及', 'en-US': 'Mentions', 'zh-TW': 'Mentions 提及', 'ja-JP': 'Mentions メンション', 'ko-KR': 'Mentions 멘션', es: 'Mentions (menciones)', ar: 'Mentions (إشارات)', 'fr-FR': 'Mentions (mentions)', ru: 'Mentions (упоминания)' },
+  },
+  {
+    slug: 'color-picker',
+    labels: { 'zh-CN': 'ColorPicker 颜色选择器', 'en-US': 'ColorPicker', 'zh-TW': 'ColorPicker 顏色選擇器', 'ja-JP': 'ColorPicker カラーピッカー', 'ko-KR': 'ColorPicker 컬러 피커', es: 'ColorPicker (selector de color)', ar: 'ColorPicker (منتقي الألوان)', 'fr-FR': 'ColorPicker (sélecteur de couleur)', ru: 'ColorPicker (палитра цветов)' },
+  },
 ]
 
 const serviceItems: { slug: string; labels: Labels }[] = [
