@@ -7,8 +7,13 @@
  *
  * 规则（计划 §3.3）：
  *   - 禁用：`*` 通配、属性选择器 `[...]`、`:not()`、`:nth-*`、标签选择器（page 除外）、
- *     `html` / `body`、`:hover` / `:focus*` / `::placeholder`、`@media (prefers-*)`
+ *     `html` / `body`、`:hover` / `:focus*` / `::placeholder`、`@media (prefers-*)`、
+ *     裸 `&`（SCSS 残留；2026-11-06 三仓同步增）
  *   - 上述 H5-only 项若被 `#ifdef H5` 包裹则放行（uni 编译链在 MP 端会整体剔除）
+ *
+ * 【覆盖端】白名单按 WXSS 取最严口径，支付宝小程序 ACSS 与抖音小程序 WXSS 的
+ * 选择器能力与微信基本同构（均不支持通配 / 属性 / 结构性伪类），同一份门禁
+ * 覆盖 H5 / 微信 / 支付宝 / 抖音四端产物（M4.9 加列后生效）。
  *
  * 用法：pnpm verify:wxss（build:styles 之后跑）
  */
@@ -50,12 +55,14 @@ const RULES = [
   [/\*(?![\w-])/g, '通配符选择器（WXSS 不支持）'],
   [/\[[^\]]*=/g, '属性选择器（WXSS 不支持）'],
   [/:not\(/g, ':not() 伪类（WXSS 不支持）'],
+  [/:has\(/g, ':has() 伪类（WXSS 不支持，share 的 input-tag 用它做聚焦边框）'],
   [/:nth-/g, ':nth-* 伪类（WXSS 不支持）'],
   [/(?:^|[\s,+~>])(?:html|body)(?=[\s.+~,#>{]|$)/g, 'html/body 标签选择器（WXSS 不支持）'],
   [/::placeholder/g, '::placeholder 伪元素（MP 不支持，应走 placeholder-style）'],
   [/:hover\b/g, ':hover 伪类（仅 H5）'],
   [/:focus(?:-visible)?\b/g, ':focus 伪类（仅 H5）'],
   [/@media\s*\(\s*prefers-/g, '@media prefers-* 查询（仅 H5）'],
+  [/&/g, '裸 & 父选择器（SCSS 残留，顶层 & 会被 sass 透传进产物；2026-11-06 三仓同步增）'],
 ]
 
 // 标签选择器：除 page 外的裸标签（div/span/svg 等）

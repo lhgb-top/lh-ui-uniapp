@@ -44,6 +44,30 @@
  * 【同步登记 2026-11-04】wxapp 同源脚本头注释里的「使用方 app.wxss @import 主题」
  * 指引修正为相对 miniprogram_npm 的路径（WXSS @import 不解析 npm 包名）；该文案为
  * wxapp 端专属，本仓无对应段，仅登记不改。
+ *
+ * 【同步登记 2026-11-05（M-w6）】wxapp 同源脚本新增两处端专属逻辑，本仓不需要、
+ * 未同步代码：① SCSS_NAME_ALIASES 增 timeline-item / skeleton-item → 父级 scss
+ * 别名（本仓子组件走 SFC style src 引父级 style.css 复用样式，无需别名）；
+ * ② COMPONENT_WXSS_PATCHES 构建期组件内联 wxss 补丁机制，目前仅 spinner 一条
+ * （小程序端 view+border 圆环 .lh-spinner__ring——本仓该样式在 lh-spinner SFC
+ * 内联 `<style>` 里，不经本脚本）。
+ *
+ * 【同步登记 2026-11-05（M-w7）】wxapp 同源脚本继续端专属扩展，本仓不需要、
+ * 未同步代码：① SCSS_NAME_ALIASES 增 breadcrumb-item / step / tab-pane /
+ * menu-item / sub-menu / dropdown-item → 父级 scss 别名（同 M-w6 子组件口径）；
+ * ② COMPONENT_WXSS_PATCHES 增 root-portal 纯补丁条目（弹层承载容器样式，本仓
+ * 的 lh-root-portal 样式在 SFC 内联 `<style>`，不进本脚本）；③ 主循环支持
+ * 「无 share 源 + 纯补丁」组件产物（仅 root-portal 走该路径）。
+ *
+ * 【同步登记 2026-11-05（M-w9）】wxapp 同源脚本继续端专属扩展，本仓不需要、
+ * 未同步代码：COMPONENT_WXSS_PATCHES 增 cascader / date-picker / time-picker
+ * 页内透明遮罩 __mask 等条目（本仓弹层点击外部关闭走文档级监听，遮罩类
+ * 写在各 SFC 内联 `<style>`，不进本脚本）。
+ *
+ * 【同步登记 2026-11-06（M-w10）】wxapp 同源脚本继续端专属扩展，本仓不需要、
+ * 未同步代码：COMPONENT_WXSS_PATCHES 增 table 筛选面板遮罩与 calendar
+ * 面板 / 网格布局补丁条目（同 M-w9 口径，本仓这些类均写在各 SFC 内联
+ * `<style>`，不进本脚本）。
  */
 import fs from 'node:fs'
 import path from 'node:path'
@@ -97,10 +121,42 @@ function wrapH5ConditionalNode(node) {
  * 判断该规则是否只服务于 H5（小程序无鼠标焦点 / 无 prefers 媒体查询 / 无 placeholder 伪元素）
  * - 选择器含 :hover / :focus / :focus-visible / ::placeholder
  * - 选择器含 [dir='rtl']：方向覆盖块，WXSS 无属性选择器且 MP 无 dir 语义
+ * - 选择器含 :nth-*：WXSS 不支持结构性伪类。share 的 table 斑马纹用它，
+ *   MP 端由模板按行索引补 --alt 类 + SFC 内联兜底样式（同 lh-pagination
+ *   的禁用兜底先例），见 lh-table 组件文档「平台差异」
+ * - 选择器含 :has()：WXSS 不支持。share 的 input-tag 用
+ *   `.lh-input-tag:has(.lh-input-tag__input:focus)` 做聚焦边框，
+ *   MP 端聚焦边框不可用（输入仍正常工作）
  * - @media (prefers-*) 查询
  */
 function isH5Only(selector) {
-  return /:(?:hover|focus|focus-visible)|::placeholder|\[dir=/.test(selector)
+  return /:(?:hover|focus|focus-visible)|::placeholder|\[dir=|:nth-|:has\(/.test(selector)
+}
+
+/**
+ * 规则是否声明了 position: sticky。
+ * WXSS 对表格单元格的 sticky 定位支持不可靠（share 的 table 固定列依赖它），
+ * 整规则只进 H5——MP 端固定列降级为普通横向滚动列（已登记的平台限制）。
+ * sticky 在普通块级容器上两端都可用，此处的 wrapping 只为剔除表格单元格
+ * 这一无同构场景；share 若新增依赖 sticky 的非表格规则，应改由 share 源
+ * 或在此重新评估。
+ */
+function declaresSticky(ruleNode) {
+  let sticky = false
+  ruleNode.walkDecls((decl) => {
+    if (decl.prop === 'position' && decl.value.trim() === 'sticky') sticky = true
+  })
+  return sticky
+}
+
+/**
+ * 选择器是否命中固定列修饰类（--fixed-left / --fixed-right 及其边缘阴影变体）。
+ * 固定列整体是 H5-only 能力（sticky 的同构问题），相关规则（定位、背景、
+ * 边缘阴影）一并只进 H5；MP 端单元格仍带 --fixed-* 类名但无对应样式，
+ * 表现为普通滚动列，模板侧无需条件编译。
+ */
+function isFixedColumnSelector(selector) {
+  return /--fixed-(?:left|right)/.test(selector)
 }
 
 /**
@@ -200,6 +256,7 @@ const INLINE_SHORTHANDS = {
 const BLOCK_SHORTHANDS = {
   'margin-block': ['margin-top', 'margin-bottom'],
   'padding-block': ['padding-top', 'padding-bottom'],
+  'inset-block': ['top', 'bottom'],
 }
 
 /** block 轴（垂直）逻辑属性：WXSS 不识别，LTR 下映射到固定物理边（top / bottom） */
@@ -210,6 +267,24 @@ const BLOCK_LOGICAL_PROPS = {
   'padding-block-end': 'padding-bottom',
   'border-block-start': 'border-top',
   'border-block-end': 'border-bottom',
+  'border-block-start-width': 'border-top-width',
+  'border-block-start-style': 'border-top-style',
+  'border-block-start-color': 'border-top-color',
+  'border-block-end-width': 'border-bottom-width',
+  'border-block-end-style': 'border-bottom-style',
+  'border-block-end-color': 'border-bottom-color',
+  'inset-block-start': 'top',
+  'inset-block-end': 'bottom',
+}
+
+/** 尺寸逻辑属性：inline 轴 → 宽度，block 轴 → 高度（WXSS 不识别 axis 尺寸） */
+const LOGICAL_SIZES = {
+  'inline-size': 'width',
+  'block-size': 'height',
+  'min-inline-size': 'min-width',
+  'min-block-size': 'min-height',
+  'max-inline-size': 'max-width',
+  'max-block-size': 'max-height',
 }
 
 /** 角圆角逻辑属性（block 轴 + inline 轴组合），LTR 下映射到固定物理角 */
@@ -225,7 +300,7 @@ const LOGICAL_TEXT_ALIGN = { start: 'left', end: 'right' }
 
 /** 命中即视为需要降级处理的逻辑属性名（含未登记者，用于抛错） */
 const LOGICAL_PROP_RE =
-  /^(?:margin|padding|inset)-(?:inline|block|inline-start|inline-end|block-start|block-end)$|^(?:margin|padding|border|inset)-(?:inline|block)-(?:start|end)(?:-(?:width|style|color))?$|^border-(?:start|end)-(?:start|end)-radius$/
+  /^(?:margin|padding|inset)-(?:inline|block|inline-start|inline-end|block-start|block-end)$|^(?:margin|padding|border|inset)-(?:inline|block)-(?:start|end)(?:-(?:width|style|color))?$|^(?:min-|max-)?(?:inline|block)-size$|^border-(?:start|end)-(?:start|end)-radius$/
 
 function physicalDecl(prop, value, important) {
   return postcss.decl({ prop, value, important })
@@ -281,6 +356,13 @@ function rewriteLogicalDeclarations(ruleNode) {
     // 与 inline 轴同款双发，WXSS 端固定按 top / bottom 渲染
     if (BLOCK_LOGICAL_PROPS[prop]) {
       dualEmit(node, [physicalDecl(BLOCK_LOGICAL_PROPS[prop], value, important)])
+      continue
+    }
+
+    // 尺寸逻辑属性（inline-size / block-size 及 min/max 变体）：
+    // WXSS 不识别轴尺寸，物理兜底 + H5 逻辑覆盖同款双发
+    if (LOGICAL_SIZES[prop]) {
+      dualEmit(node, [physicalDecl(LOGICAL_SIZES[prop], value, important)])
       continue
     }
 
@@ -448,7 +530,27 @@ const purifyPlugin = () => ({
 
     // ③ 仅 H5 的规则条件编译包裹（打标记防 walk 重新访问时无限递归）。
     //    含 [dir='rtl'] 的规则整块只进 H5——WXSS 无属性选择器，内部声明无需降级
-    if (isH5Only(ruleNode.selector)) {
+    //   【连体规则按分片过滤（2026-11-05 修，与 wxapp / alipay 同步）】share 常见形态
+    //   `.lh-pagination__page--active, .lh-pagination__page--active:hover:not(:disabled) { … }`：
+    //   早期整串判定把干净分片一并包进 #ifdef H5（MP 端激活态基样式丢失）。
+    //   混合时拆成两条：干净分片留在 MP+H5，H5 分片克隆后包裹条件编译。
+    const selectorFragments = ruleNode.selector.split(',')
+    const h5OnlyFragments = selectorFragments.filter((s) => isH5Only(s))
+    const keptFragments = selectorFragments.filter((s) => !isH5Only(s))
+    if (h5OnlyFragments.length > 0 && keptFragments.length > 0) {
+      const h5Rule = ruleNode.clone()
+      h5Rule.selector = h5OnlyFragments.join(',')
+      ruleNode.selector = keptFragments.join(',')
+      ruleNode.parent.insertAfter(ruleNode, h5Rule)
+      wrapH5ConditionalNode(h5Rule)
+    } else if (isH5Only(ruleNode.selector)) {
+      wrapH5ConditionalNode(ruleNode)
+      return
+    }
+
+    // ③b position: sticky / 固定列修饰类规则只进 H5（table 固定列降级，
+    //     见 declaresSticky 与 isFixedColumnSelector 的注释）
+    if (declaresSticky(ruleNode) || isFixedColumnSelector(ruleNode.selector)) {
       wrapH5ConditionalNode(ruleNode)
       return
     }
