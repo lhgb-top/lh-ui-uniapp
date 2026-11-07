@@ -81,9 +81,11 @@ page {
      的 label 在控件外部的文档流里，不需要这 16px，也不产生这段 :has 依赖
      （WXSS 无 :has，小程序端静态位置因此完全可用） */
 }
+/* #ifdef H5 */
 .lh-input__wrapper--label-float:has(.lh-input--textarea) .lh-input {
   padding-top: 16px;
 }
+/* #endif */
 
 .lh-input__label {
   position: absolute;
@@ -110,26 +112,42 @@ page {
 
 /* label 的垂直基准随 size 档位变化：size 类挂在 .lh-input 上、label 挂在 wrapper 上，
    只能跨元素用 :has 匹配。仅浮动位置需要（静态位置 label 在文档流里） */
+/* #ifdef H5 */
 .lh-input__wrapper--label-float:has(.lh-input--mini) .lh-input__label {
   top: calc(var(--lh-control-height-mini, 20px) / 2);
 }
+/* #endif */
+
+/* #ifdef H5 */
 
 .lh-input__wrapper--label-float:has(.lh-input--small) .lh-input__label {
   top: calc(var(--lh-control-height-small, 24px) / 2);
 }
 
+/* #endif */
+
+/* #ifdef H5 */
+
 .lh-input__wrapper--label-float:has(.lh-input--large) .lh-input__label {
   top: calc(var(--lh-control-height-large, 40px) / 2);
 }
+
+/* #endif */
+
+/* #ifdef H5 */
 
 .lh-input__wrapper--label-float:has(.lh-input--textarea) .lh-input__label {
   top: 16px;
   transform: translateY(0);
 }
+
+/* #endif */
+/* #ifdef H5 */
 .lh-input__wrapper--label-float:has(.lh-input--textarea) .lh-input__label--float {
   top: 0;
   transform: translateY(-50%) scale(0.85);
 }
+/* #endif */
 
 .lh-input__wrapper--label-top .lh-input__label,
 .lh-input__wrapper--label-bottom .lh-input__label,

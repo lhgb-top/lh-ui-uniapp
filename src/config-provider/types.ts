@@ -32,6 +32,9 @@ export type LhThemeableComponent =
   | 'date-picker'
   | 'time-picker'
   | 'tree-select'
+  | 'autocomplete'
+  | 'mentions'
+  | 'color-picker'
   // ── 前向声明（plus 基线，本仓尚未消费）──
   | 'alert'
   | 'popover'

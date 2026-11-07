@@ -34,6 +34,28 @@
     "usingComponents": true,
     "mergeVirtualHostAttributes": true
   },
+  "mp-alipay": {
+    "appid": "",
+    "setting": {
+      "urlCheck": false,
+      "es6": true,
+      "minified": true,
+      "postcss": true
+    },
+    "usingComponents": true,
+    "mergeVirtualHostAttributes": true
+  },
+  "mp-toutiao": {
+    "appid": "",
+    "setting": {
+      "urlCheck": false,
+      "es6": true,
+      "minified": true,
+      "postcss": true
+    },
+    "usingComponents": true,
+    "mergeVirtualHostAttributes": true
+  },
   "h5": {
     "title": "lh-ui uniapp",
     "router": { "mode": "hash" }

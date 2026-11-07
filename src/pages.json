@@ -317,6 +317,84 @@
       "style": {
         "navigationBarTitleText": "Upload 上传"
       }
+    },
+    {
+      "path": "pages/affix/affix",
+      "style": {
+        "navigationBarTitleText": "Affix 固定"
+      }
+    },
+    {
+      "path": "pages/backtop/backtop",
+      "style": {
+        "navigationBarTitleText": "BackTop 返回顶部"
+      }
+    },
+    {
+      "path": "pages/anchor/anchor",
+      "style": {
+        "navigationBarTitleText": "Anchor 锚点导航"
+      }
+    },
+    {
+      "path": "pages/virtual-list/virtual-list",
+      "style": {
+        "navigationBarTitleText": "VirtualList 虚拟列表"
+      }
+    },
+    {
+      "path": "pages/table/table",
+      "style": {
+        "navigationBarTitleText": "Table 表格"
+      }
+    },
+    {
+      "path": "pages/result/result",
+      "style": {
+        "navigationBarTitleText": "Result 结果页"
+      }
+    },
+    {
+      "path": "pages/text/text",
+      "style": {
+        "navigationBarTitleText": "Text 排版文本"
+      }
+    },
+    {
+      "path": "pages/link/link",
+      "style": {
+        "navigationBarTitleText": "Link 链接"
+      }
+    },
+    {
+      "path": "pages/input-tag/input-tag",
+      "style": {
+        "navigationBarTitleText": "InputTag 标签输入"
+      }
+    },
+    {
+      "path": "pages/autocomplete/autocomplete",
+      "style": {
+        "navigationBarTitleText": "Autocomplete 自动补全"
+      }
+    },
+    {
+      "path": "pages/mentions/mentions",
+      "style": {
+        "navigationBarTitleText": "Mentions 提及"
+      }
+    },
+    {
+      "path": "pages/color-picker/color-picker",
+      "style": {
+        "navigationBarTitleText": "ColorPicker 颜色选择器"
+      }
+    },
+    {
+      "path": "pages/config-provider/config-provider",
+      "style": {
+        "navigationBarTitleText": "ConfigProvider 全局配置"
+      }
     }
   ],
   "globalStyle": {

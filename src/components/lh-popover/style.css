@@ -109,6 +109,9 @@ page {
   bottom: calc(var(--lh-popover-arrow-size, 8px) / -2);
   left: var(--lh-arrow-offset, 50%);
   margin-left: calc(var(--lh-popover-arrow-size, 8px) / -2);
+  /* #ifdef H5 */
+  margin-inline-start: calc(var(--lh-popover-arrow-size, 8px) / -2);
+  /* #endif */
 }
 
 .lh-popover__popper--bottom .lh-popover__arrow,
@@ -117,6 +120,9 @@ page {
   top: calc(var(--lh-popover-arrow-size, 8px) / -2);
   left: var(--lh-arrow-offset, 50%);
   margin-left: calc(var(--lh-popover-arrow-size, 8px) / -2);
+  /* #ifdef H5 */
+  margin-inline-start: calc(var(--lh-popover-arrow-size, 8px) / -2);
+  /* #endif */
 }
 
 .lh-popover__popper--left .lh-popover__arrow,

@@ -83,8 +83,11 @@ page {
   background: var(--lh-bg-color, #FAF6F0);
   cursor: pointer;
 }
+ .lh-select--open .lh-select__trigger {
+  border-color: var(--lh-primary-color, #2B4C7C);
+}
 /* #ifdef H5 */
-.lh-select__trigger:focus, .lh-select__trigger:hover, .lh-select--open .lh-select__trigger {
+.lh-select__trigger:focus, .lh-select__trigger:hover {
   border-color: var(--lh-primary-color, #2B4C7C);
 }
 /* #endif */

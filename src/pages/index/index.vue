@@ -72,6 +72,19 @@ const list = [
   { name: 'TreeSelect 树形选择器', desc: '树面板选择 / 多选级联 / 回显', path: '/pages/tree-select/tree-select' },
   { name: 'Transfer 穿梭框', desc: '双列勾选穿梭 / 搜索过滤 / 禁用', path: '/pages/transfer/transfer' },
   { name: 'Upload 上传', desc: '图片 / 视频 / 进度 / 限制 / 拖拽仅 H5', path: '/pages/upload/upload' },
+  { name: 'Affix 固定', desc: '吸顶 / 吸底 / scroll-view 变体', path: '/pages/affix/affix' },
+  { name: 'BackTop 返回顶部', desc: '阈值 / 平滑 / scroll-view 变体', path: '/pages/backtop/backtop' },
+  { name: 'Anchor 锚点导航', desc: '联动 / 纵横 / scroll-view 变体', path: '/pages/anchor/anchor' },
+  { name: 'VirtualList 虚拟列表', desc: '定高 / 动态高度 / 万条渲染', path: '/pages/virtual-list/virtual-list' },
+  { name: 'Table 表格', desc: '排序 / 筛选 / 虚拟滚动 / 固定列仅 H5', path: '/pages/table/table' },
+  { name: 'Result 结果页', desc: '四态 / 自定义图标 / 插槽', path: '/pages/result/result' },
+  { name: 'Text 排版文本', desc: '级别 / 语义 / 省略 / 复制', path: '/pages/text/text' },
+  { name: 'Link 链接', desc: '类型 / 下划线 / 禁用 / 前后缀', path: '/pages/link/link' },
+  { name: 'InputTag 标签输入', desc: '触发键 / 上限 / 去重 / 点删', path: '/pages/input-tag/input-tag' },
+  { name: 'Autocomplete 自动补全', desc: '过滤 / 键盘导航 / 选中回调', path: '/pages/autocomplete/autocomplete' },
+  { name: 'Mentions 提及', desc: '@ 触发 / 过滤 / 多行', path: '/pages/mentions/mentions' },
+  { name: 'ColorPicker 颜色选择器', desc: '色板 / 滑杆 / 透明度 / 预设', path: '/pages/color-picker/color-picker' },
+  { name: 'ConfigProvider 全局配置', desc: '主题变量 / 暗色 / 组件级主题 / 尺寸', path: '/pages/config-provider/config-provider' },
 ]
 
 function go(path: string) {

@@ -108,6 +108,18 @@ import LhTree from './components/lh-tree/lh-tree.vue'
 import LhTreeSelect from './components/lh-tree-select/lh-tree-select.vue'
 import LhTransfer from './components/lh-transfer/lh-transfer.vue'
 import LhUpload from './components/lh-upload/lh-upload.vue'
+import LhAffix from './components/lh-affix/lh-affix.vue'
+import LhBacktop from './components/lh-backtop/lh-backtop.vue'
+import LhAnchor from './components/lh-anchor/lh-anchor.vue'
+import LhVirtualList from './components/lh-virtual-list/lh-virtual-list.vue'
+import LhTable from './components/lh-table/lh-table.vue'
+import LhResult from './components/lh-result/lh-result.vue'
+import LhText from './components/lh-text/lh-text.vue'
+import LhLink from './components/lh-link/lh-link.vue'
+import LhInputTag from './components/lh-input-tag/lh-input-tag.vue'
+import LhAutocomplete from './components/lh-autocomplete/lh-autocomplete.vue'
+import LhMentions from './components/lh-mentions/lh-mentions.vue'
+import LhColorPicker from './components/lh-color-picker/lh-color-picker.vue'
 // root-portal 是弹层基建组件，不进注册表（easycom 直接用标签）
 import LhRootPortal from './components/lh-root-portal/lh-root-portal.vue'
 
@@ -267,6 +279,18 @@ import type { LhTreeNode, LhTreeCheckState, LhFlatTreeNode } from '@lh-ui/share/
 import type { LhTransferProps } from './components/lh-transfer/types'
 import type { LhTransferItem, LhTransferSide } from '@lh-ui/share/core/transfer'
 import type { LhUploadProps } from './components/lh-upload/types'
+import type { LhAffixProps } from './components/lh-affix/types'
+import type { LhBacktopProps } from './components/lh-backtop/types'
+import type { LhAnchorProps, LhAnchorItem, LhFlatAnchorItem } from './components/lh-anchor/types'
+import type { LhVirtualListProps } from './components/lh-virtual-list/types'
+import type { LhTableProps, LhTableColumn, LhTableRow, LhTableSortOrder } from './components/lh-table/types'
+import type { LhResultProps } from './components/lh-result/types'
+import type { LhTextProps } from './components/lh-text/types'
+import type { LhLinkProps } from './components/lh-link/types'
+import type { LhInputTagProps } from './components/lh-input-tag/types'
+import type { LhAutocompleteProps } from './components/lh-autocomplete/types'
+import type { LhMentionsProps } from './components/lh-mentions/types'
+import type { LhColorPickerProps } from './components/lh-color-picker/types'
 import type {
   LhUniFile,
   LhUniUploadRequest,
@@ -288,6 +312,14 @@ import type { LhLocaleType, LhLocaleMessages, LhLocalePath, LhTranslate } from '
 import type { LhIconName } from '@lh-ui/share/core/icon'
 // 裁切模式类型真源在 share core（与 LhIconName 同样的直接引入方式）
 import type { LhImageFit } from '@lh-ui/share/core/image'
+// 状态 / 级别 / 类型枚举真源在 share core（同名透传再导出，跟随 share 发版）
+import type { LhResultStatus } from '@lh-ui/share/core/result'
+import type { LhTextLevel, LhTextType } from '@lh-ui/share/core/text'
+import type { LhLinkType, LhLinkUnderline } from '@lh-ui/share/core/link'
+import type { LhInputTagTrigger } from '@lh-ui/share/core/input-tag'
+import type { LhAutocompleteOption } from '@lh-ui/share/core/autocomplete'
+import type { LhMentionOption } from '@lh-ui/share/core/mentions'
+import type { LhColorFormat } from '@lh-ui/share/core/color-picker'
 
 /**
  * 组件注册表（registry 测试反向扫描 components/lh-* 断言此清单；新增组件必须登记）
@@ -364,6 +396,18 @@ export const lhComponents: (Component & { name?: string })[] = [
   LhTreeSelect,
   LhTransfer,
   LhUpload,
+  LhAffix,
+  LhBacktop,
+  LhAnchor,
+  LhVirtualList,
+  LhTable,
+  LhResult,
+  LhText,
+  LhLink,
+  LhInputTag,
+  LhAutocomplete,
+  LhMentions,
+  LhColorPicker,
 ]
 
 /**
@@ -462,6 +506,18 @@ export {
   LhTreeSelect,
   LhTransfer,
   LhUpload,
+  LhAffix,
+  LhBacktop,
+  LhAnchor,
+  LhVirtualList,
+  LhTable,
+  LhResult,
+  LhText,
+  LhLink,
+  LhInputTag,
+  LhAutocomplete,
+  LhMentions,
+  LhColorPicker,
   // 挂载点组件（命令式服务依赖）
   LhMessage,
   LhLoading,
@@ -679,6 +735,44 @@ export type {
   LhUniUploadRequest,
   LhUploadResult,
   LhUploadConfig,
+  // Affix
+  LhAffixProps,
+  // BackTop
+  LhBacktopProps,
+  // Anchor
+  LhAnchorProps,
+  LhAnchorItem,
+  LhFlatAnchorItem,
+  // VirtualList
+  LhVirtualListProps,
+  // Table
+  LhTableProps,
+  LhTableColumn,
+  LhTableRow,
+  LhTableSortOrder,
+  // Result
+  LhResultProps,
+  LhResultStatus,
+  // Text
+  LhTextProps,
+  LhTextLevel,
+  LhTextType,
+  // Link
+  LhLinkProps,
+  LhLinkType,
+  LhLinkUnderline,
+  // InputTag
+  LhInputTagProps,
+  LhInputTagTrigger,
+  // Autocomplete
+  LhAutocompleteProps,
+  LhAutocompleteOption,
+  // Mentions
+  LhMentionsProps,
+  LhMentionOption,
+  // ColorPicker
+  LhColorPickerProps,
+  LhColorFormat,
   // Message / Loading / Notification
   LhMessageConfig,
   LhMessageOptions,

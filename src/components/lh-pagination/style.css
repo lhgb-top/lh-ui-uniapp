@@ -125,8 +125,14 @@ nav ul.lh-pagination__pages li + li {
   color: var(--lh-disabled-text-color, #C8C8C8);
   background-color: transparent;
 }
+.lh-pagination__page--active {
+  /* 主色底上的文字不写死 #fff：金色/松花等浅主色下 #fff 对比度不足 AA */
+  color: var(--lh-color-on-primary, #fff);
+  background-color: var(--lh-primary-color, #2B4C7C);
+  font-weight: var(--lh-font-weight-primary, 400);
+}
 /* #ifdef H5 */
-.lh-pagination__page--active, .lh-pagination__page--active:hover:not(:disabled) {
+ .lh-pagination__page--active:hover:not(:disabled) {
   /* 主色底上的文字不写死 #fff：金色/松花等浅主色下 #fff 对比度不足 AA */
   color: var(--lh-color-on-primary, #fff);
   background-color: var(--lh-primary-color, #2B4C7C);

@@ -211,6 +211,10 @@ page {
 .lh-sub-menu__inline-content {
   min-height: 0;
   overflow: hidden;
+  /* 该元素为 ul（包裹 MenuItem 的 li），需重置 ul 默认外边距 / 列表符号 */
+  margin: 0;
+  padding: 0;
+  list-style: none;
   /* 嵌套子菜单缩进 */
 }
 .lh-sub-menu__inline-content .lh-sub-menu__title {

@@ -130,25 +130,25 @@ page {
   transform: rotate(45deg);
 }
 
-.lh-popconfirm__popper--top & {
+.lh-popconfirm__popper--top .lh-popconfirm__arrow {
   bottom: calc(var(--lh-popover-arrow-size, 8px) / -2);
   left: var(--lh-arrow-offset, 50%);
   margin-left: calc(var(--lh-popover-arrow-size, 8px) / -2);
 }
 
-.lh-popconfirm__popper--bottom & {
+.lh-popconfirm__popper--bottom .lh-popconfirm__arrow {
   top: calc(var(--lh-popover-arrow-size, 8px) / -2);
   left: var(--lh-arrow-offset, 50%);
   margin-left: calc(var(--lh-popover-arrow-size, 8px) / -2);
 }
 
-.lh-popconfirm__popper--left & {
+.lh-popconfirm__popper--left .lh-popconfirm__arrow {
   right: calc(var(--lh-popover-arrow-size, 8px) / -2);
   top: var(--lh-arrow-offset, 50%);
   margin-top: calc(var(--lh-popover-arrow-size, 8px) / -2);
 }
 
-.lh-popconfirm__popper--right & {
+.lh-popconfirm__popper--right .lh-popconfirm__arrow {
   left: calc(var(--lh-popover-arrow-size, 8px) / -2);
   top: var(--lh-arrow-offset, 50%);
   margin-top: calc(var(--lh-popover-arrow-size, 8px) / -2);
