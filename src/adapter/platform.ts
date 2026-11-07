@@ -30,6 +30,24 @@ export const LH_IS_MP_WEIXIN: boolean = (() => {
   // #endif
 })()
 
+export const LH_IS_MP_ALIPAY: boolean = (() => {
+  // #ifdef MP-ALIPAY
+  return true
+  // #endif
+  // #ifndef MP-ALIPAY
+  return false
+  // #endif
+})()
+
+export const LH_IS_MP_TOUTIAO: boolean = (() => {
+  // #ifdef MP-TOUTIAO
+  return true
+  // #endif
+  // #ifndef MP-TOUTIAO
+  return false
+  // #endif
+})()
+
 /** 视口信息（与 LhDOMRectLike 的 viewport 入参同构，喂 computePosition 用） */
 export interface LhViewport {
   top: number
@@ -64,16 +82,27 @@ export function getLhWindowInfo(): LhViewport {
 }
 
 /**
- * 微信基础库版本号（root-portal 降级判断用）。
- * 微信 root-portal 需基础库 >= 2.25.2，低版本降级为页内 fixed。
- * 非微信端返回 null。
+ * 基础库版本号（root-portal 降级判断用）。
+ * 微信 root-portal 需基础库 >= 2.25.2，支付宝 root-portal 同样有客户端版本门槛，
+ * 低版本一律降级为页内 fixed。抖音不支持 root-portal，直接返回 null
+ * （lh-root-portal 的条件编译分支本来就不为抖音渲染 root-portal 节点）。
+ * H5 走 teleport，无版本判断需求。
  */
 export function getLhLibVersion(): string | null {
   // #ifdef MP-WEIXIN
   return uni.getAppBaseInfo().SDKVersion ?? null
   // #endif
 
-  // #ifndef MP-WEIXIN
+  // 支付宝的 getAppBaseInfo 不保证带 SDKVersion，兜底取系统信息
+  // #ifdef MP-ALIPAY
+  {
+    const info = uni.getAppBaseInfo?.() as { SDKVersion?: string } | undefined
+    return info?.SDKVersion ?? uni.getSystemInfoSync().SDKVersion ?? null
+  }
+  // #endif
+
+  // 其他端（抖音无 root-portal / H5 走 teleport）无需版本判断
+  // #ifndef MP-WEIXIN || MP-ALIPAY
   return null
   // #endif
 }

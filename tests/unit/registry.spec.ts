@@ -79,6 +79,18 @@ describe('components registry', () => {
       'LhTreeSelect',
       'LhTransfer',
       'LhUpload',
+      'LhAffix',
+      'LhBacktop',
+      'LhAnchor',
+      'LhVirtualList',
+      'LhTable',
+      'LhResult',
+      'LhText',
+      'LhLink',
+      'LhInputTag',
+      'LhAutocomplete',
+      'LhMentions',
+      'LhColorPicker',
     ])
   })
 
